@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html  ng-app="winebay-admin">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Winebay - Painel da WineHouse</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="assets/vendor/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/vendor/Ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" href="assets/vendor/adminlte/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="assets/vendor/adminlte/css/skins/skin-blue.min.css">
+    <link rel="stylesheet" href="assets/vendor/datatables.net-bs/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="assets/vendor/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" href="assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="assets/vendor/angular-bootstrap-switch/bootstrap-switch.min.css">
+    <link rel="stylesheet" href="assets/style/winebay.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+</head>
+<body class="hold-transition skin-blue sidebar-mini" ng-controller="MainController">
+    <div class="wrapper">
+        <header class="main-header">
+            <a href="/" class="logo">
+                <span class="logo-mini"><b>W</b>B</span>
+                <span class="logo-lg"><b>Wine</b>BAY</span>
+            </a>
+            <nav class="navbar navbar-static-top" role="navigation">
+                <a data-href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                    <i class="fa fa-bars"></i>
+                    <span class="sr-only">Acionar Menu</span>
+                </a>
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown user user-menu">
+                            <a data-href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <img ng-src="{{APIBaseUrl + '/' + WinehouseData.logo}}" class="user-image" alt="Avatar">
+                                <span class="hidden-xs">{{WinehouseData.name}}</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="user-header">
+                                    <img ng-src="{{APIBaseUrl + '/' + WinehouseData.logo}}" class="img-circle" alt="Avatar">
+                                    <p>
+                                        {{WinehouseData.name}}
+                                        <!-- <small>Member since Nov. 2012</small> -->
+                                    </p>
+                                </li>
+                                <li class="user-footer">
+                                    <div class="pull-right">
+                                        <button class="btn btn-default btn-flat" ng-click="DoLogout()">Sair</button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <aside class="main-sidebar">
+            <section class="sidebar" ng-controller="SideMenuCtrl">
+                <ul class="sidebar-menu" data-widget="tree">
+                    <li ng-repeat="item in MenuItems" class="{{CurrentState.url==item.href?'active':''}}{{item.subitens?'treeview':''}}{{(CurrentState.url.indexOf(item.hrefBase)>=0)?' menu-open':''}}">
+                        <a href="{{!item.subitens?'#!'+item.href:'#'}}">
+                            <i ng-if="item.icon" class="{{item.icon}}"></i>
+                            <span>{{item.text}}</span>
+                            <span class="pull-right-container" ng-if="item.subitens">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu" ng-if="item.subitens" style="{{(CurrentState.url.indexOf(item.hrefBase)>=0)?'display:block;':''}}">
+                            <li ng-repeat="subitem in item.subitens">
+                                <a href="#!{{subitem.href}}">{{subitem.text}}</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!--<li class="header">HEADER</li> -->
+                </ul>
+            </section>
+        </aside>
+        <div class="content-wrapper" ui-view></div>
+        <footer class="main-footer text-right">
+            <strong>Winebay &copy; 2018.</strong> Todos os direitos reservados.
+        </footer>
+    </div>
+
+    <div id="preloadoverlay" class="preload-overlay">
+        <i class="fa fa-sync fa-spin"></i>
+    </div>
+    <script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function(event) {
+        var element = document.getElementById("preloadoverlay");
+        element.parentNode.removeChild(element);
+    });
+    </script>
+    <script src="assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="assets/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="assets/vendor/adminlte/js/adminlte.min.js"></script>
+    <script src="assets/scripts/required/angular.min.js"></script>
+    <script src="assets/scripts/required/angular-sanitize.min.js"></script>
+    <script src="assets/scripts/required/dir-paginate.js"></script>
+    <script src="assets/scripts/required/angular-ui-router.min.js"></script>
+    <script src="assets/scripts/required/angular-ui-bootstrap.min.js"></script>
+    <script src="assets/scripts/required/bootbox.min.js"></script>
+    <script src="assets/vendor/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="assets/vendor/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="assets/vendor/ng-flow/ng-flow-standalone.min.js"></script>
+    <script src="assets/vendor/momentjs/moment.js"></script>
+    <script src="assets/vendor/momentjs/pt-br.js"></script>
+    <script src="assets/vendor/daterangepicker/daterangepicker.js"></script>
+    <script src="assets/vendor/daterangepicker/angular-daterangepicker.js"></script>
+    <script src="assets/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="assets/vendor/bootstrap-datepicker/dist/locales/bootstrap-datepicker.pt-BR.min.js"></script>
+    <script src="assets/vendor/angular-bootstrap-switch/bootstrap-switch.min.js"></script>
+    <script src="assets/vendor/angular-bootstrap-switch/angular-bootstrap-switch.min.js"></script>
+    <script src="assets/vendor/ng-clipboard/clipboard.min.js"></script>
+    <script src="assets/vendor/ng-clipboard/ngclipboard.min.js"></script>
+    <script src="assets/vendor/ngmask/ngMask.min.js"></script>
+
+    <script src="assets/scripts/app.js"></script>
+    <script src="assets/scripts/services/Winehouse.js"></script>
+    <script src="assets/scripts/controllers/LoginCtrl.js"></script>
+    <script src="assets/scripts/controllers/CadastroCtrl.js"></script>
+    <script src="assets/scripts/controllers/DashboardCtrl.js"></script>
+    <script src="assets/scripts/controllers/SideMenuCtrl.js"></script>
+
+    <script src="assets/scripts/controllers/winehouse/WinehouseCtrl.js"></script>
+    <script src="assets/scripts/controllers/produtos/ProdutosCtrl.js"></script>
+    <script src="assets/scripts/controllers/produtos/NovoProdutoCtrl.js"></script>
+    <script src="assets/scripts/controllers/ofertas/OfertasCtrl.js"></script>
+    <script src="assets/scripts/controllers/kits/KitsCtrl.js"></script>
+    <script src="assets/scripts/controllers/kits/NovoKitCtrl.js"></script>
+    <script src="assets/scripts/controllers/kits/VerKitCtrl.js"></script>
+    <script src="assets/scripts/controllers/estoque/EstoqueGeralCtrl.js"></script>
+    <script src="assets/scripts/controllers/produtos/AlterarProdutoCtrl.js"></script>
+    <script src="assets/scripts/controllers/pedidos/ListaPedidosCtrl.js"></script>
+    <script src="assets/scripts/controllers/pedidos/VerPedidoCtrl.js"></script>
+    <script src="assets/scripts/controllers/produtos/CadastrarProdutoCtrl.js"></script>
+    <script src="assets/scripts/controllers/produtos/VerProdutoCtrl.js"></script>
+</body>
+</html>

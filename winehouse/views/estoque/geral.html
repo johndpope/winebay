@@ -1,0 +1,160 @@
+<section class="content-header">
+    <h1>Estoque Geral</h1>
+    <ol class="breadcrumb">
+        <li class="active">
+            <i class="fa fa-list-ol"></i> Estoque</li>
+    </ol>
+</section>
+<section class="content container-fluid">
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">
+                Estoque Atualizado
+            </h3>
+        </div>
+        <div class="box-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Valor Unitário</th>
+                            <th>Estoque Atual</th>
+                        </tr>
+                        <tr>
+                            <th><input type="text" ng-model="FiltroEstoque.name" class="form-control" ng-disabled="load" /></th>
+                            <th><input type="text" ng-model="FiltroEstoque.price" class="form-control" ng-disabled="load" /></th>
+                            <th><input type="text" ng-model="FiltroEstoque.quantity" class="form-control" ng-disabled="load" /></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr dir-paginate="produto in ListaProdutos | filter:FiltroEstoque | itemsPerPage:15"
+                            pagination-id="pagProdutos">
+                            <td>{{produto.name}}</td>
+                            <td>{{'R$'+produto.price}}</td>
+                            <td>
+                                {{produto.quantity}}
+                                <button class="btn btn-xs btn-default" ng-click="DefinirEstoque(produto)" ng-disabled="load"><i class="fas fa-pencil-alt"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <dir-pagination-controls pagination-id="pagProdutos" class="pull-right"></dir-pagination-controls>
+        </div>
+        <div class="overlay" ng-if="load">
+            <i class="fa fa-sync fa-spin"></i>
+        </div>
+    </div>
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">Lançamentos Detalhados</h3>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="form-group col-sm-4">
+                    <label>Produto:</label>
+                    <select class="form-control" ng-model="BuscaLancamentos.Produto">
+                        <option value="{{product.id}}" ng-repeat="product in ListaProdutos">{{product.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group col-sm-3">
+                    <label>Data Inicial</label>
+                    <div class="input-group date">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input type="text" class="form-control pull-right" ng-disabled="load" readonly="readonly"
+                            ng-model="BuscaLancamentos.Inicio" placeholder="Selecione a data inicial" />
+                    </div>
+                </div>
+                <div class="form-group col-sm-3">
+                    <label>Data Final</label>
+                    <div class="input-group date">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input type="text" class="form-control pull-right" ng-disabled="load" readonly="readonly"
+                            ng-model="BuscaLancamentos.Fim" placeholder="Selecione a data final" />
+                    </div>
+                </div>
+                <div class="form-group col-sm-2">
+                    <button class="btn btn-primary btn-spaced" ng-click="BuscarLancamentos()" ng-disabled="load">
+                        {{load?'':'Buscar'}}
+                        <i class="fa fa-spin fa-spinner" ng-if="load"></i>
+                    </button>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-sm-12">
+                    <h4>Efetuar Lançamento:</h4>
+                    <div class="form-group row">
+                        <div class="col-sm-2">
+                            <label>Quantidade:</label>
+                            <input type="number" min="1" step="1" class="form-control"
+                                ng-model="NovoLancamento.quantity" ng-disabled="load" />
+                        </div>
+                        <div class="col-sm-2">
+                            <label>Descrição:</label>
+                            <input type="text" class="form-control" ng-model="NovoLancamento.description"
+                                ng-disabled="load" />
+                        </div>
+                        <div class="col-sm-4">
+                            <label>Tipo</label>
+                            <select class="form-control" ng-model="NovoLancamento.type" ng-disabled="load">
+                                <option value="add">Adicionar</option>
+                                <option value="del">Remover</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-4">
+                            <button class="btn btn-spaced btn-primary" ng-click="EfetivarLancamento()"
+                                ng-disabled="load">Efetuar
+                                Lançamento</button>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="col-sm-12" ng-if="ListaLancamentos.length">
+                    <h3>Lançamentos do produto:</h3>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Produto</th>
+                                    <th>Quantidade</th>
+                                    <th>Descrição</th>
+                                    <th>Manual</th>
+                                </tr>
+                                <tr>
+                                    <th><input type="text" class="form-control" ng-model="FiltroLancamentos.date" />
+                                    </th>
+                                    <th><input type="text" class="form-control"
+                                            ng-model="FiltroLancamentos.product_name" /></th>
+                                    <th><input type="text" class="form-control" ng-model="FiltroLancamentos.quantity" />
+                                    </th>
+                                    <th><input type="text" class="form-control"
+                                            ng-model="FiltroLancamentos.description" /></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr dir-paginate="lanc in ListaLancamentos | itemsPerPage: 30 | orderBy:'rawDate':true | filter:FiltroLancamentos"
+                                    pagination-id="pagLancamentosEstoque">
+                                    <td>{{lanc.date}}</td>
+                                    <td>{{lanc.product_name}}</td>
+                                    <td>{{lanc.quantity}}</td>
+                                    <td>{{lanc.description}}</td>
+                                    <td>
+                                        <i ng-class="{'fa fa-check':lanc.is_manual, 'fa fa-times':!lanc.is_manual}"></i>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <dir-pagination-controls pagination-id="pagLancamentosEstoque"></dir-pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

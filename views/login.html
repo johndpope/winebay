@@ -1,0 +1,43 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-title">
+                <div class="col-xs-10 col-sm-5 col-md-4 text-center col-centered">
+                    <h2>Login</h2>
+                    <span class="rainbow-line"></span>
+                </div>
+            </div>
+        </div>
+        <form class="col-sm-6 col-sm-offset-3 form-lg" ng-submit="DoLogin()">
+            <div class="form-group h4 top-space-lg text-center" ng-if="UserLogged">
+                <strong>Você já efetuou login!</strong> <a href="#!/">Clique aqui</a> para ir à página inicial.
+            </div>
+            <div class="form-group">
+                <label class="top-space-lg">Login:</label>
+                <input class="form-control" type="text" required ng-disabled="loginLoad" ng-model="loginData.email" />
+            </div>
+            <div class="form-group">
+                <label>Senha:</label>
+                <div class="input-group">
+                    <input class="form-control" type="{{showPassLP?'text':'password'}}" required ng-disabled="loginLoad"
+                        ng-model="loginData.password" />
+                    <span class="input-group-addon cursor-pointer" ng-click="showPassLP=!showPassLP">
+                        <i class="fas fa-eye{{showPassLP?'':'-slash'}}"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group text-center top-space">
+                <button class="btn btn-xlg btn-bolder btn-primary" ng-disabled="loginLoad" type="submit">
+                    <span ng-if="!loginLoad">Login</span>
+                    <span ng-if="loginLoad"><i class="fa fa-spin fa-sync"></i></span>
+                </button>
+            </div>
+        </form>
+        <div class="col-sm-12 form-footer">
+            <p>
+                Ainda não tem cadastro? <a
+                    href="#!/cadastro{{Destination?'/redirect/' + Destination:''}}">cadastre-se</a>
+            </p>
+        </div>
+    </div>
+</div>

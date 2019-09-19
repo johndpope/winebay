@@ -1,0 +1,154 @@
+<div class="page-banner row" style="background-image: url('/assets/img/pedidos_cliente.jpg')">
+    <div class="header-label">
+        <i class="fa fa-truck"></i> Área do Cliente</div>
+    <h2 class="customer-area">Meus Dados</h2>
+</div>
+<div class="container">
+    <form class="col-sm-12 form-lg" ng-submit="SalvarDados()">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="home-group home-filtered">
+                    <div class="group-header">
+                        <h3>
+                            <span class="bolder">Meus Dados</span>
+                        </h3>
+                        <span class="rainbow-line"></span>
+                    </div>
+                    <div class="form-info">
+                        Gerencie abaixo os seus dados cadastrados.
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="form-group h4 text-center" ng-if="UserLogged">
+                    <strong>Você já efetuou login!</strong> <a href="#!/">Clique aqui</a> para ir à página inicial.
+                </div>
+                <div class="form-group">
+                    <label>Nome Completo:</label>
+                    <input class="form-control" type="text" required ng-model="DadosCadastro.name" ng-disabled="load" />
+                </div>
+                <div class="form-group">
+                    <label>CPF: <small>Necessário para enviar a nota fiscal do seu pedido</small></label>
+                    <input class="form-control" type="text" required ng-model="DadosCadastro.cpf" ng-disabled="load"
+                        mask="999.999.999-99" mask-restrict="reject" mask-limit="true" />
+                </div>
+                <div class="form-group">
+                    <label>E-Mail:</label>
+                    <input class="form-control" type="email" required ng-model="DadosCadastro.email"
+                        ng-disabled="load" />
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <label>Trocar Senha:</label>
+                        <input class="form-control" type="password" ng-model="DadosCadastro.new_password"
+                            ng-disabled="load" />
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label>Confirmar Troca de Senha:</label>
+                        <input class="form-control" type="password" ng-model="DadosCadastro.new_password_conf" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Sexo:</label>
+                    <label rel="radio"><input type="radio" ng-model="DadosCadastro.gender" value="F" ng-disabled="load"
+                            name="cadastro_sexo" />
+                        Feminino</label>
+                    <label rel="radio"><input type="radio" ng-model="DadosCadastro.gender" value="M" ng-disabled="load"
+                            name="cadastro_sexo" />
+                        Masculino</label>
+                </div>
+                <div class="form-group">
+                    <label>Data de Nascimento:</label>
+                    <input class="form-control" type="text" ng-model="DadosCadastro.birth_date" ng-disabled="load"
+                        mask="99/99/9999" mask-restrict="reject" mask-limit="true" />
+                </div>
+                <div class="form-group">
+                    <label>Telefone:</label>
+                    <input class="form-control" type="tel" required ng-model="DadosCadastro.phone" ng-disabled="load"
+                        mask="99 99999?-9999" mask-restrict="reject" mask-limit="true" />
+                </div>
+                <div class="form-group">
+                    <label rel="checkbox">
+                        <input type="checkbox" ng-model="DadosCadastro.newsletter" value="true" ng-disabled="load" />
+                        Desejo receber as promoções por e-mail.
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="home-group home-filtered">
+                    <div class="group-header">
+                        <h3>
+                            <span class="bolder">Meus Endereços</span>
+                        </h3>
+                        <span class="rainbow-line"></span>
+                    </div>
+                    <div class="form-info">
+                        Gerencie abaixo os seus endereços de entrega.
+                        <button class="btn btn-xs btn-success pull-right" ng-click="AdicionaEndereco()" type="button"
+                            ng-disabled="load">novo endereço</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div ng-repeat="address in DadosCadastro.addresses">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-9 form-group">
+                                    <label>Nome:</label>
+                                    <input class="form-control" required ng-disabled="load" ng-model="address.name" />
+                                </div>
+                                <div class="col-sm-3 text-right">
+                                    <button class="btn btn-sm btn-danger" ng-click="RemoveEndereco(address)"
+                                        ng-disabled="load">remover</button>
+                                </div>
+                                <div class="col-sm-12 form-group">
+                                    <label>Endereço:</label>
+                                    <input class="form-control" required ng-disabled="load" ng-model="address.address" />
+                                </div>
+                                <div class="col-sm-3 form-group">
+                                    <label>CEP:</label>
+                                    <input class="form-control" required type="text" ng-disabled="load" ng-model="address.cep"
+                                        mask="99999-999" mask-restrict="reject" mask-limit="true" />
+                                </div>
+                                <div class="col-sm-4 form-group">
+                                    <label>Bairro:</label>
+                                    <input class="form-control" required ng-disabled="load" ng-model="address.region" />
+                                </div>
+                                <div class="col-sm-3 form-group">
+                                    <label>Cidade:</label>
+                                    <input class="form-control" required ng-disabled="load" ng-model="address.city" />
+                                </div>
+                                <div class="col-sm-2 form-group">
+                                    <label>UF:</label>
+                                    <input type="text" required class="form-control" ng-disabled="load" ng-model="address.state"
+                                        mask="@@" mask-restrict="reject" mask-limit="true" />
+                                </div>
+                                <div class="col-sm-12 form-group">
+                                    <label>Observações:</label>
+                                    <input class="form-control" ng-disabled="load" ng-model="address.information" />
+                                </div>
+                                <div class="col-sm-12 form-group">
+                                    <label>Destinatário:</label>
+                                    <input class="form-control" ng-disabled="load" ng-model="address.dest" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group text-center top-space">
+                    <button class="btn btn-xlg btn-bolder btn-primary" type="submit" ng-disabled="load">
+                        <span ng-show="!load">Salvar Dados</span>
+                        <span ng-show="load"><i class="fa fa-spin fa-sync"></i></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

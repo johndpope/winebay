@@ -1,0 +1,357 @@
+<section class="content-header">
+    <h1>Detalhes do Pedido - {{DadosPedido.number}}</h1>
+    <ol class="breadcrumb">
+        <li>
+            <a href="#!/pedidos"><i class="fas fa-shopping-cart"></i> Pedidos</a>
+        </li>
+        <li class="active">
+            Detalhes do Pedido
+        </li>
+    </ol>
+</section>
+<section class="content container-fluid" ng-if="DadosEtiqueta">
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">
+                Imprimir Etiqueta
+            </h3>
+            <button class="pull-right btn btn-primary" ng-click="ExibeDadosEtiqueta(false)">Fechar</button>
+        </div>
+        <div class="box-body">
+            <iframe ng-src="{{DadosEtiqueta}}" ng-if="DadosEtiqueta" frameborder="0"></iframe>
+        </div>
+    </div>
+</section>
+<section class="content container-fluid" ng-show="!DadosEtiqueta">
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">
+                Dados do Pedido
+            </h3>
+        </div>
+        <div class="box-body">
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    <label>Número</label>
+                    <div class="h4 no-top-space">{{DadosPedido.number}}</div>
+                </div>
+                <div class="col-sm-3">
+                    <label>Data</label>
+                    <div class="h4 no-top-space">{{DadosPedido.date_format}}</div>
+                </div>
+                <div class="col-sm-3">
+                    <label>Status</label>
+                    <div class="h4 no-top-space">
+                        <span ng-show="DadosPedido.status=='open'">Aberto</span>
+                        <span ng-show="DadosPedido.status=='approved'">Aprovado</span>
+                        <span ng-show="DadosPedido.status=='shipment'">Em Transporte</span>
+                        <span ng-show="DadosPedido.status=='finished'">Finalizado</span>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <label>Cliente</label>
+                    <div class="h4 no-top-space">{{DadosPedido.customer_name}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="overlay" ng-show="load">
+            <i class="fa fa-sync fa-spin"></i>
+        </div>
+    </div>
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">
+                Dados de Pagamento
+            </h3>
+        </div>
+        <div class="box-body">
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    <label>Forma de Pagamento</label>
+                    <div class="h4 no-top-space">
+                        {{DadosPedido.payment_mode=='credit_card'?'Cartão':'Boleto'}}
+                    </div>
+                </div>
+                <div class="col-sm-3" ng-show="DadosPedido.payment_mode=='boleto'">
+                    <label>Número do Boleto</label>
+                    <div class="h4 no-top-space">
+                        <button class="btn btn-xs btn-primary" ngclipboard
+                            data-clipboard-text="{{DadosPedido.invoice_number}}"
+                            ng-click="CopiaNumeroBoleto()">Copiar</button>
+                    </div>
+                </div>
+                <div class="col-sm-3" ng-show="DadosPedido.payment_mode=='credit_card'">
+                    <label>Cartão Utilizado</label>
+                    <div class="h4 no-top-space">
+                        **** **** **** {{DadosPedido.card_digits}}
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    <label>Valor dos Produtos</label>
+                    <div class="h4 no-top-space">
+                        R$ {{DadosPedido.total_amount.toBRCurrency()}}
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <label>Valor do Frete</label>
+                    <div class="h4 no-top-space">
+                        R$ {{DadosPedido.total_shipping.toBRCurrency()}}
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <label>Desconto do Frete</label>
+                    <div class="h4 no-top-space">
+                        R$ {{DadosPedido.shipment_discount.toBRCurrency()}}
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <label>Taxa da Plataforma</label>
+                    <div class="h4 no-top-space">
+                        R$ {{DadosPedido.total_fee.toBRCurrency()}}
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="form-group row">
+                <div class="col-sm-4">
+                    <h3>Total do Pedido: <strong>R$ {{DadosPedido.final_value.toBRCurrency()}}</strong></h3>
+                </div>
+                <div class="col-sm-4">
+                    <h3>Total a Receber: <strong>R$ {{DadosPedido.total_to_receive.toBRCurrency()}}</strong></h3>
+                </div>
+            </div>
+        </div>
+        <div class="overlay" ng-show="load">
+            <i class="fa fa-sync fa-spin"></i>
+        </div>
+    </div>
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">
+                Itens do Pedido
+            </h3>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <strong>Embalagens para o Pedido:</strong>
+                    <ul>
+                        <li ng-repeat="embalagem in DadosPedido.Embalagens">
+                            {{embalagem.count}}x {{embalagem.name}}
+                            ({{embalagem.size}} garrafas por caixa)
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-sm-12">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Quantidade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="produto in DadosPedido.list">
+                                <td>{{produto.name}}</td>
+                                <td>{{produto.quantity}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-sm-12 h4">
+                    <strong>Total:</strong> {{DadosPedido.total_quantity}} garrafas
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <button class="btn btn-primary btn-lg"
+                        ng-click="ExibeDadosEtiqueta(DadosPedido.shipping_label)">Imprimir
+                        Etiqueta</button>
+                </div>
+            </div>
+        </div>
+        <div class="overlay" ng-show="load">
+            <i class="fa fa-sync fa-spin"></i>
+        </div>
+    </div>
+    <div class="box" ng-show="DadosPedido.status!='open'">
+        <div class="box-header">
+            <h3 class="box-title">Coleta de Pacotes</h3>
+        </div>
+        <div class="box-body">
+            <div ng-show="DadosPedido.customer_pickup">
+                O cliente irá retirar os produtos na Winehouse.
+            </div>
+            <div ng-show="!DadosPedido.customer_pickup">
+                <div class="callout callout-warning" ng-if="DadosPedido.status=='approved'">
+                    <h4>Atenção</h4>
+                    <p>Lembre-se se embalar os produtos e imprimir as etiquetas antes da coleta!</p>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h5>Local de Coleta:</h5>
+                        <div class="form-group">
+                            <strong>Endereço:</strong>
+                            <div>
+                                {{DadosWinehouse.address}} - {{DadosWinehouse.city}}/{{DadosWinehouse.state}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <strong>CEP:</strong>
+                            <div>
+                                {{DadosWinehouse.cep}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <strong>Telefone:</strong>
+                            <div>
+                                {{DadosWinehouse.phone}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <h5>Liberação:</h5>
+                        <!-- <div>
+                            <label class="right-space">
+                                <input type="radio" name="pickup_type" ng-model="DadosColeta.type" value="now" />
+                                liberar agora
+                            </label>
+                            <label>
+                                <input type="radio" name="pickup_type" ng-model="DadosColeta.type" value="schedule" />
+                                agendar
+                            </label>
+                        </div> -->
+                        <div class="row">
+                            <div class="col-sm-6 form-group">
+                                <label>Data:</label>
+                                <!-- <div ng-show="DadosColeta.type=='now'"> -->
+                                <div>
+                                    {{DadosColeta.nowDate}}
+                                </div>
+                                <!-- <input type="text" class="form-control" ng-model="DadosColeta.date"
+                                    ng-show="DadosColeta.type=='schedule'" mask="99/99/9999" mask-restrict="reject"
+                                    mask-limit="true" /> -->
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                <label>Hora:</label>
+                                <div>
+                                    <strong>{{DadosColeta.minHour}}</strong> até
+                                    <strong>{{DadosColeta.maxHour}}</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <hr ng-show="DadosPedido.awaiting_pickup" />
+                        <div ng-show="DadosPedido.awaiting_pickup">
+                            <h5>Dados da Coleta:</h5>
+                            <div class="form-group">
+                                <label>Código:</label>
+                                <div>{{DadosPedido.pickup_info.confirmation}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <h5>Informações:</h5>
+                        <div class="form-group">
+                            <label>Local de Retirada:</label>
+                            <input type="text" class="form-control" ng-model="DadosColeta.location"
+                                ng-disabled="DadosPedido.pickup_info" />
+                            <small>Ex: Recepção, balcão lateral</small>
+                        </div>
+                        <div class="form-group">
+                            <label>Responsável:</label>
+                            <input type="text" class="form-control" ng-model="DadosColeta.contact"
+                                ng-disabled="DadosPedido.pickup_info" />
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <button class="btn btn-lg btn-primary" ng-click="SolicitarColeta()" ng-disabled="load"
+                            ng-show="!DadosPedido.pickup_info">Solicitar
+                            Coleta</button>
+                        <select class="form-control" ng-model="MotivoCancColeta"
+                            ng-show="DadosPedido.status=='approved'&&DadosPedido.awaiting_pickup">
+                            <option value="">Selecione um motivo...</option>
+                            <option value="001">Embalagens não estão prontas</option>
+                            <option value="006">Cancelamento sem motivo</option>
+                        </select>
+                        <button class="btn btn-lg btn-danger" ng-click="CancelarColeta()"
+                            ng-disabled="load||MotivoCancColeta==''"
+                            ng-show="DadosPedido.status=='approved'&&DadosPedido.awaiting_pickup">Cancelar
+                            Coleta</button>
+                    </div>
+                </div>
+                <div ng-show="!DadosPedido.awaiting_pickup">
+
+                </div>
+                <div ng-show="DadosPedido.awaiting_pickup">
+
+                </div>
+            </div>
+            <div ng-show="!DadosPedido.customer_pickup&&DadosPedido.status!='approved'">
+
+            </div>
+        </div>
+        <div class="overlay" ng-show="load">
+            <i class="fa fa-sync fa-spin"></i>
+        </div>
+    </div>
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">
+                Dados de Entrega
+            </h3>
+        </div>
+        <div class="box-body">
+            <div ng-show="!DadosPedido.customer_pickup">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <h4 class="no-bottom-space">Endereço Selecionado:</h4>
+                        <span class="h4"><strong>{{DadosPedido.address.name}}</strong></span>
+                        <div class="top-space">
+                            {{DadosPedido.address.address}}, {{DadosPedido.address.region}}<br />
+                            CEP: {{DadosPedido.address.cep}} -
+                            {{DadosPedido.address.city}}/{{DadosPedido.address.state}}<br />
+                            <strong>Destinatário:</strong> {{DadosPedido.address.dest}}
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <h4 class="no-bottom-space">Forma de Entrega:</h4>
+                        <div ng-show="!DadosPedido.customer_pickup">
+                            <span class="h4"><strong>Entrega Expressa</strong></span>
+                            <div ng-show="DadosPedido.shipping.awaiting_pickup">
+                                <div class="top-space">
+                                    <strong>Coleta Prevista:</strong> {{DadosPedido.shipment.PickupDate}} até
+                                    {{DadosPedido.shipment.PickupCutoffTime}}<br />
+                                    <strong>Tempo em Trânsito:</strong> {{DadosPedido.shipment.TotalTransitDays}}<br />
+                                    <strong>Entrega Prevista:</strong> {{DadosPedido.shipment.DeliveryDate}} até
+                                    {{DadosPedido.shipment.DeliveryTime}}<br />
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-show="DadosPedido.customer_pickup">
+                            O cliente irá retirar os produtos na Winehouse.
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <h4 class="no-bottom-space">Status da Entrega:</h4>
+                        <div class="top-space">
+                            <strong>Código de Rastreio:</strong> {{DadosPedido.tracking_code}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12" ng-show="DadosPedido.customer_pickup">
+                <h4>O cliente irá retirar os produtos na Winehouse.</h4>
+            </div>
+        </div>
+        <div class="overlay" ng-show="load">
+            <i class="fa fa-sync fa-spin"></i>
+        </div>
+    </div>
+</section>

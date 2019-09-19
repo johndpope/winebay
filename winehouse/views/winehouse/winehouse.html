@@ -1,0 +1,103 @@
+<section class="content-header">
+    <h1>Minha Winehouse</h1>
+    <ol class="breadcrumb">
+        <li class="active">
+            <i class="fa fa-warehouse"></i> Winehouse</li>
+    </ol>
+</section>
+<section class="content container-fluid">
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">Dados da Winehouse</h3>
+        </div>
+        <div class="box-body">
+            <div class="form-group">
+                <label>Nome Fantasia</label>
+                <input class="form-control" placeholder="Digite o nome" type="text" ng-model="DadosWinehouse.name"
+                    ng-disabled="uploadFlag" />
+            </div>
+            <div class="form-group">
+                <label>Razão Social</label>
+                <input class="form-control" placeholder="Digite a razão social" type="text" ng-model="DadosWinehouse.business_name"
+                    ng-disabled="uploadFlag" />
+            </div>
+            <div class="form-group">
+                <label>Descrição</label>
+                <textarea class="form-control" placeholder="Digite a descrição (opcional)"
+                    ng-model="DadosWinehouse.description" ng-disabled="uploadFlag"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Responsável</label>
+                <small class="pull-right">Para alterar o responsável, entre em contato com a administração.</small>
+                <input class="form-control" placeholder="Digite o nome" type="text" ng-model="DadosWinehouse.contact"
+                    disabled/>
+            </div>
+            <div class="form-group">
+                <label>Endereço</label>
+                <input class="form-control" placeholder="Digite o endereço" type="text"
+                    ng-model="DadosWinehouse.address" ng-disabled="uploadFlag" />
+            </div>
+            <div class="form-group">
+                <label>Cidade</label>
+                <input class="form-control" placeholder="Digite a cidade" type="text" ng-model="DadosWinehouse.city"
+                    ng-disabled="uploadFlag" />
+            </div>
+            <div class="form-group">
+                <label>Bairro</label>
+                <input class="form-control" placeholder="Digite o bairro" type="text" ng-model="DadosWinehouse.region"
+                    ng-disabled="uploadFlag" />
+            </div>
+            <div class="form-group">
+                <label>Estado</label>
+                <input class="form-control" placeholder="Digite o estado" type="text" ng-model="DadosWinehouse.state"
+                    mask="@@" mask-restrict="reject" mask-limit="true" ng-disabled="uploadFlag" />
+            </div>
+            <div class="form-group">
+                <label>CEP</label>
+                <input class="form-control" placeholder="Digite o cep" type="text" ng-model="DadosWinehouse.cep"
+                    mask="99999-999" mask-restrict="reject" mask-limit="true" ng-disabled="uploadFlag" />
+            </div>
+            <div class="form-group">
+                <label>Telefone</label>
+                <input class="form-control" placeholder="Digite o telefone" type="text" ng-model="DadosWinehouse.phone"
+                mask="99 99999?-9999" mask-restrict="reject" mask-limit="true" ng-disabled="uploadFlag" />
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input class="form-control" placeholder="Digite o email" type="text" ng-model="DadosWinehouse.email"
+                    ng-disabled="uploadFlag" />
+            </div>
+            <div class="form-group">
+                <label>CNPJ</label>
+                <input class="form-control" placeholder="Digite o cnpj" type="text" ng-model="DadosWinehouse.cnpj"
+                    ng-disabled="uploadFlag" />
+            </div>
+            <div class="form-group">
+                <label>Regime Tributário:</label>
+                <select class="form-control" ng-model="DadosWinehouse.tax_type" ng-disabled="uploadFlag">
+                    <option value="">Selecione</option>
+                    <option value="lucro_real">Lucro Real</option>
+                    <option value="lucro_presumido">Lucro Presumido</option>
+                    <option value="simples_nacional">Simples Nacional</option>
+                </select>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-4">
+                    <label>Imagem:</label>
+                    <div><small>Para alterar a imagem, entre em contato com a Administração</small></div>
+                    <div class="thumbnail">
+                        <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&text=sem+imagem"
+                            ng-hide="DadosWinehouse.logo" />
+                        <img src="{{APIBaseUrl+'/'+DadosWinehouse.logo}}" ng-if="DadosWinehouse.logo" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" ng-click="SalvarWinehouse()">Salvar Dados</button>
+            </div>
+        </div>
+        <div class="overlay" ng-if="load">
+            <i class="fa fa-sync fa-spin"></i>
+        </div>
+    </div>
+</section>

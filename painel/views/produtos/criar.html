@@ -1,0 +1,108 @@
+<section class="content-header">
+    <h1>Criar Produto</h1>
+    <ol class="breadcrumb">
+        <li><i class="fa fa-sitemap"></i> Estrutura</li>
+        <li>Produtos</li>
+        <li class="active">Criar Produto</li>
+    </ol>
+</section>
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Dados do Produto</h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group">
+                        <label>Nome:</label>
+                        <input type="text" class="form-control" ng-model="dadosProduto.name" ng-disabled="novoProdutoLoad" />
+                    </div>
+                    <div class="form-group">
+                        <label>Graduação:</label>
+                        <input type="text" class="form-control" ng-model="dadosProduto.graduation" ng-disabled="novoProdutoLoad" />
+                    </div>
+                    <div class="form-group">
+                        <label>Tamanho <small>(ml)</small>:</label>
+                        <input type="text" class="form-control" ng-model="dadosProduto.size" ng-disabled="novoProdutoLoad" />
+                    </div>
+                    <div class="form-group">
+                        <label>País:</label>
+                        <select class="form-control" ng-model="dadosProduto.id_country" ng-disabled="novoProdutoLoad">
+                            <option value="">Selecione</option>
+                            <option ng-repeat="pais in ListaPaises" value="{{pais.id}}">{{pais.name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Região:</label>
+                        <select class="form-control" ng-model="dadosProduto.id_region" ng-disabled="novoProdutoLoad">
+                            <option value="">Selecione</option>
+                            <option ng-repeat="regiao in ListaRegioes | filter:{id_country:dadosProduto.id_country}"
+                                value="{{regiao.id}}">{{regiao.name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Uva:</label>
+                        <select class="form-control" ng-model="dadosProduto.id_grape" ng-disabled="novoProdutoLoad">
+                            <option value="">Selecione</option>
+                            <option ng-repeat="uva in ListaUvas" value="{{uva.id}}">{{uva.name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Produtor:</label>
+                        <select class="form-control" ng-model="dadosProduto.id_productor" ng-disabled="novoProdutoLoad">
+                            <option value="">Selecione</option>
+                            <option ng-repeat="produtor in ListaProdutores" value="{{produtor.id}}">{{produtor.name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Tipicidade:</label>
+                        <select class="form-control" ng-model="dadosProduto.id_tipicity" ng-disabled="novoProdutoLoad">
+                            <option value="">Selecione</option>
+                            <option ng-repeat="tipicidade in ListaTipicidades" value="{{tipicidade.id}}">{{tipicidade.name}}</option>
+                        </select>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <a class="btn btn-default" href="#!/produtos" ng-disabled="novoProdutoLoad||uploadFlag">Voltar</a>
+                        <button class="btn btn-primary pull-right" ng-click="CriarProduto()" ng-disabled="novoProdutoLoad||uploadFlag">Criar
+                            Produto</button>
+                    </div>
+                </div>
+                <div class="overlay" ng-if="novoProdutoLoad">
+                    <i class="fa fa-sync fa-spin"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Imagens</h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group" flow-init="{singleFile:true}" flow-upload-started="ToggleUploadFlag(true)"
+                        flow-complete="ToggleUploadFlag(false)" flow-file-added="!!{png:1,jpg:1,jpeg:1}[$file.getExtension()]"
+                        flow-files-submitted="$flow.upload()" flow-file-success="dadosProduto.id_image_thumb=$message">
+                        <label>Imagem do Produto: <i class="fa fa-spin fa-spinner" ng-if="uploadFlag"></i></label>
+                        <div>
+                            <a data-href="#" class="btn btn-xs btn-primary" ng-hide="$flow.files.length" flow-btn
+                                flow-attrs="{accept:'image/*'}" ng-disabled="uploadFlag">Selecionar imagem</a>
+                            <a data-href="#" class="btn btn-xs btn-warning" ng-show="$flow.files.length" flow-btn
+                                flow-attrs="{accept:'image/*'}" ng-disabled="uploadFlag">Trocar</a>
+                            <a data-href="#" class="btn btn-xs btn-danger" ng-show="$flow.files.length" ng-click="CancelaImagem($flow, dadosProduto.id_image_thumb)"
+                                ng-disabled="uploadFlag">Remover</a>
+                        </div>
+                        <p><small>Envie apenas imagens JPG ou PNG.</small></p>
+                        <div class="thumbnail">
+                            <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&text=sem+miniatura" ng-hide="$flow.files.length" />
+                            <img flow-img="$flow.files[0]" ng-show="$flow.files.length" />
+                        </div>
+                    </div>
+                </div>
+                <div class="overlay" ng-if="novoProdutoLoad">
+                    <i class="fa fa-sync fa-spin"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

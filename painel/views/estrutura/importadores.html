@@ -1,0 +1,141 @@
+<section class="content-header">
+    <h1>Importadores</h1>
+    <ol class="breadcrumb">
+        <li><i class="fa fa-sitemap"></i> Estrutura</li>
+        <li class="active">Importadores</li>
+    </ol>
+</section>
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Lista de Importadores</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Endereço</th>
+                                <th>Telefone</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dir-paginate="importador in ListaImportadores | itemsPerPage:15" pagination-id="pagImportadores">
+                                <td>{{importador.name}}</td>
+                                <td>{{importador.address}}</td>
+                                <td>{{importador.phone}}</td>
+                                <td class="text-center">
+                                    <button class="btn btn-xs btn-warning" ng-click="AlteraImportador(importador)"><i class="fa fa-edit"></i></button>
+                                    <button class="btn btn-xs btn-danger" ng-click="ExcluiImportador(importador)"><i class="fa fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <dir-pagination-controls pagination-id="pagImportadores" class="pull-right"></dir-pagination-controls>
+                </div>
+                <div class="overlay" ng-if="importadoresLoad">
+                    <i class="fa fa-sync fa-spin"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="box box-warning" ng-if="ImportadorAlterar">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Alterar Importador</h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group">
+                        <label>Nome</label>
+                        <input class="form-control" placeholder="Digite o nome do Importador" type="text" ng-model="ImportadorAlterar.name" ng-disabled="uploadFlag"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Descrição</label>
+                        <textarea class="form-control" placeholder="Digite a descrição (opcional)" ng-model="ImportadorAlterar.description" ng-disabled="uploadFlag"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Endereço</label>
+                        <input class="form-control" placeholder="Digite o endereço" type="text" ng-model="ImportadorAlterar.address" ng-disabled="uploadFlag"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Telefone</label>
+                        <input class="form-control" placeholder="Digite o telefone" type="text" ng-model="ImportadorAlterar.phone" ng-disabled="uploadFlag"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input class="form-control" placeholder="Digite o email (opcional)" type="text" ng-model="ImportadorAlterar.email" ng-disabled="uploadFlag"/>
+                    </div>
+                    <div class="form-group" flow-init="{singleFile:true}" flow-upload-started="ToggleUploadFlag(true)" flow-complete="ToggleUploadFlag(false)" flow-file-added="!!{png:1,jpg:1,jpeg:1}[$file.getExtension()]" flow-files-submitted="$flow.upload()" flow-file-success="DefineImagemImportadorAlterar($message, $flow)">
+                        <label>Imagem: <i class="fa fa-spin fa-spinner" ng-if="uploadFlag"></i></label>
+                        <div>
+                            <a data-href="#" class="btn btn-xs btn-primary" ng-hide="$flow.files.length" flow-btn flow-attrs="{accept:'image/*'}" ng-disabled="uploadFlag">Selecionar imagem</a>
+                            <a data-href="#" class="btn btn-xs btn-warning" ng-show="$flow.files.length" flow-btn flow-attrs="{accept:'image/*'}" ng-disabled="uploadFlag">Trocar</a>
+                            <a data-href="#" class="btn btn-xs btn-danger" ng-show="$flow.files.length" ng-click="CancelaImagem($flow, ImportadorAlterar.id_image)" ng-disabled="uploadFlag">Remover</a>
+                        </div>
+                        <p><small>Envie apenas imagens JPG ou PNG.</small></p>
+                        <div class="thumbnail">
+                            <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&text=sem+imagem" ng-hide="$flow.files.length||ImportadorAlterar.image"/>
+                            <img src="{{APIBaseUrl+ImportadorAlterar.image}}" ng-if="ImportadorAlterar.image&&!$flow.files.length"/>
+                            <img flow-img="$flow.files[0]" ng-show="$flow.files.length"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-default" ng-click="AlteraImportador(false)" ng-disabled="uploadFlag">Cancelar</button>
+                    <button type="submit" class="btn btn-primary pull-right" ng-click="SalvarImportador()" ng-disabled="uploadFlag">Alterar</button>
+                </div>
+                <div class="overlay" ng-if="alterarImportadorLoad">
+                    <i class="fa fa-sync fa-spin"></i>
+                </div>
+            </div>
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Cadastrar Importador</h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group">
+                        <label>Nome</label>
+                        <input class="form-control" placeholder="Digite o nome" type="text" ng-model="NovoImportador.name" ng-disabled="uploadFlag"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Descrição</label>
+                        <textarea class="form-control" placeholder="Digite a descrição (opcional)" ng-model="NovoImportador.description" ng-disabled="uploadFlag"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Endereço</label>
+                        <input class="form-control" placeholder="Digite o endereço" type="text" ng-model="NovoImportador.address" ng-disabled="uploadFlag"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Telefone</label>
+                        <input class="form-control" placeholder="Digite o telefone" type="text" ng-model="NovoImportador.phone" ng-disabled="uploadFlag"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input class="form-control" placeholder="Digite o email (opcional)" type="text" ng-model="NovoImportador.email" ng-disabled="uploadFlag"/>
+                    </div>
+                    <div class="form-group" flow-init="{singleFile:true}" flow-upload-started="ToggleUploadFlag(true)" flow-complete="ToggleUploadFlag(false)" flow-file-added="!!{png:1,jpg:1,jpeg:1}[$file.getExtension()]" flow-files-submitted="$flow.upload()" flow-file-success="DefineImagemNovoImportador($message, $flow)">
+                        <label>Imagem: <i class="fa fa-spin fa-spinner" ng-if="uploadFlag"></i></label>
+                        <div>
+                            <a data-href="#" class="btn btn-xs btn-primary" ng-hide="$flow.files.length" flow-btn flow-attrs="{accept:'image/*'}" ng-disabled="uploadFlag">Selecionar imagem</a>
+                            <a data-href="#" class="btn btn-xs btn-warning" ng-show="$flow.files.length" flow-btn flow-attrs="{accept:'image/*'}" ng-disabled="uploadFlag">Trocar</a>
+                            <a data-href="#" class="btn btn-xs btn-danger" ng-show="$flow.files.length" ng-click="CancelaImagem($flow, NovoImportador.id_image)" ng-disabled="uploadFlag">Remover</a>
+                        </div>
+                        <p><small>Envie apenas imagens JPG ou PNG.</small></p>
+                        <div class="thumbnail">
+                            <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&text=sem+imagem" ng-hide="$flow.files.length"/>
+                            <img flow-img="$flow.files[0]" ng-show="$flow.files.length"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-primary pull-right" ng-click="CriaNovoImportador()" ng-disabled="uploadFlag">Cadastrar</button>
+                </div>
+                <div class="overlay" ng-if="novoImportadorLoad">
+                    <i class="fa fa-sync fa-spin"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

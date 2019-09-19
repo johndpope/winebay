@@ -1,0 +1,48 @@
+<section class="content-header">
+    <h1>Imagens</h1>
+    <ol class="breadcrumb">
+        <li class="active"><i class="far fa-images"></i> Imagens</li>
+    </ol>
+</section>
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">
+                        Imagens de Produtos
+                    </h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Filtro:</label>
+                                <input type="text" ng-model="Filtro.fullstring" class="form-control"
+                                    placeholder="Filtre por qualquer informação do produto" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="images-container">
+                        <div class="col-sm-3" dir-paginate="produto in ListaProdutos | filter:Filtro | itemsPerPage:40"
+                            pagination-id="pagImagens">
+                            <a href="#!/produtos/alterar/{{produto.id}}" class="thumbnail text-center" target="_blank">
+                                <div><strong><small>{{produto.name}}</small></strong></div>
+                                <img src="{{APIBaseUrl + produto.image_thumb}}" style="height:150px" />
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <dir-pagination-controls pagination-id="pagImagens" class="pull-right">
+                            </dir-pagination-controls>
+                        </div>
+                    </div>
+                </div>
+                <div class="overlay" ng-if="produtosLoad">
+                    <i class="fa fa-sync fa-spin"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

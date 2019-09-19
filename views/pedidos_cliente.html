@@ -1,0 +1,230 @@
+<div class="page-banner row" style="background-image: url('/assets/img/pedidos_cliente.jpg')">
+    <div class="header-label">
+        <i class="fa fa-truck"></i> Área do Cliente</div>
+    <h2 class="customer-area">Acompanhe seu pedido</h2>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="home-group home-filtered">
+                <div class="group-header">
+                    <h3>
+                        <span class="bolder">Meus Pedidos</span>
+                    </h3>
+                    <span class="rainbow-line"></span>
+                </div>
+                <div class="form-info">
+                    Confira abaixo detalhes sobre a entrega de seu pedido ou histórico de suas compras.
+                </div>
+            </div>
+            <div class="customer-orders">
+                <div class="row">
+                    <div class="col-sm-11">
+                        <h4 ng-if="!ListaPedidos.length">Você não possui nenhum pedido.</h4>
+                        <div class="row" ng-if="ListaPedidos.length">
+                            <div class="col-sm-3">
+                                <div class="order-info-header">Número do Pedido</div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="order-info-header">Data do Pedido</div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="order-info-header">Local de Entrega</div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="order-info-header">Valor Total</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1" ng-if="ListaPedidos.length">
+                        <div class="order-info-header">Detalhes</div>
+                    </div>
+                </div>
+                <div class="customer-order-item" ng-repeat="pedido in ListaPedidos">
+                    <div class="row">
+                        <div class="col-sm-11">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="order-info">{{pedido.number}}</div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="order-info">{{pedido.date_formatted}}</div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="order-info">{{pedido.address.name}}</div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="order-info">{{'R$'+pedido.final_value.toBRCurrency()}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <div class="order-toggle" ng-click="ToggleOrder(pedido)">
+                                <i class="fa fa-chevron-{{pedido.expanded?'up':'down'}}"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="orderContent{{pedido.id}}" style="display:none">
+                        <div class="order-line">
+                            <div class="col-sm-7">
+                                <h3>Status</h3>
+                                <div class="col-sm-3">
+                                    <div class="order-status {{pedido.status.open?'active':''}}">
+                                        <div class="image">
+                                            <img src="/assets/img/icons/carrinho.png" />
+                                        </div>
+                                        <div class="info">
+                                            Pedido realizado
+                                        </div>
+                                        <div class="icon">
+                                            <i class="fa fa-check-circle"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="order-status {{pedido.status.approved?'active':''}}">
+                                        <div class="image">
+                                            <img src="/assets/img/icons/pagamento.png" />
+                                        </div>
+                                        <div class="info">
+                                            Pagamento aprovado
+                                        </div>
+                                        <div class="icon">
+                                            <i class="fa fa-check-circle"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="order-status {{pedido.status.shipment?'active':''}}">
+                                        <div class="image">
+                                            <img src="/assets/img/icons/caminhao.png" />
+                                        </div>
+                                        <div class="info">
+                                            Entregue à transportadora
+                                        </div>
+                                        <div class="icon">
+                                            <i class="fa fa-check-circle"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="order-status {{pedido.status.finished?'active':''}}">
+                                        <div class="image">
+                                            <img src="/assets/img/icons/tacas.png" />
+                                        </div>
+                                        <div class="info">
+                                            Entrega realizada
+                                        </div>
+                                        <div class="icon">
+                                            <i class="fa fa-check-circle"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <table class="table table-hover order-table">
+                                    <tbody>
+                                        <tr>
+                                            <th>Forma de Pagamento</th>
+                                            <td>{{pedido.payment_mode=='credit_card'?'Cartão de Crédito':'Boleto'}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Endereço de entrega</th>
+                                            <td>
+                                                {{pedido.address.address}}, {{pedido.address.region}}<br />
+                                                CEP: {{pedido.address.cep}} -
+                                                {{pedido.address.city}}/{{pedido.address.state}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Destinatário</th>
+                                            <td>{{pedido.address.dest}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <!-- <div class="form-group" ng-if="pedido.status.shipment">
+                                    <label>Código de Rastreio:</label>
+                                    <div>{{pedido.tracking_code}}</div>
+                                </div> -->
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="order-line">
+                            <div class="col-sm-7">
+                                <h3>Sua Compra</h3>
+                                <table class="table table-hover order-items-table">
+                                    <tbody>
+                                        <tr ng-repeat="item in pedido.list">
+                                            <td>
+                                                <div class="order-item-name">{{item.name}}</div>
+                                                <div class="order-item-info">
+                                                    {{item.quantity}} un. de R${{item.unit_price.toBRCurrency()}} cada
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="order-item-price">
+                                                    <small>R$</small>
+                                                    {{item.total_price.toBRCurrency()}}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="order-item-name">Frete</div>
+                                            </td>
+                                            <td>
+                                                <div class="order-item-price">
+                                                    <small>R$</small>
+                                                    {{pedido.total_shipping.toBRCurrency()}}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="pedido.shipment_discount>0">
+                                            <td>
+                                                <div class="order-item-name">Desconto no frete</div>
+                                            </td>
+                                            <td>
+                                                <div class="order-item-price">
+                                                    <small>R$</small>
+                                                    -{{pedido.shipment_discount.toBRCurrency()}}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="order-item-name text-primary">Valor Final</div>
+                                            </td>
+                                            <td>
+                                                <div class="order-item-price text-primary">
+                                                    <small>R$</small>
+                                                    {{pedido.final_value.toBRCurrency()}}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-sm-5">
+                                <h3>Consulte sua nota fiscal eletrônica</h3>
+                                <button class="btn btn-bolder btn-lg btn-square btn-primary" disabled>Arquivo
+                                    PDF</button>
+                                <button class="btn btn-bolder btn-lg btn-square btn-primary" disabled>Arquivo
+                                    XML</button>
+                                <hr />
+                                <h3>Política de troca e devolução</h3>
+                                <div>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque aliquet ullamcorper
+                                    elit, non finibus nisi. Morbi sagittis
+                                    nisi ac purus lacinia imperdiet. Aliquam mattis, tellus vitae ornare porta, velit ex
+                                    volutpat nisi, nec gravida arcu enim ac quam. Nulla malesuada accumsan metus, quis
+                                    pellentesque
+                                    tortor imperdiet vitae.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

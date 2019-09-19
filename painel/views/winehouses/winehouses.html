@@ -1,0 +1,287 @@
+<section class="content-header">
+    <h1>Winehouses</h1>
+    <ol class="breadcrumb">
+        <li><i class="fa fa-sitemap"></i> Estrutura</li>
+        <li class="active">Winehouses</li>
+    </ol>
+</section>
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Lista de Winehouses</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Telefone</th>
+                                <th>Comissão</th>
+                                <th>Cadastro</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dir-paginate="winehouse in ListaWinehouses | itemsPerPage:15"
+                                pagination-id="pagWinehouses">
+                                <td>{{winehouse.name}}<br /><small>{{winehouse.business_name}}</small></td>
+                                <td>{{winehouse.phone}}</td>
+                                <td>{{winehouse.fee_percentage + '%'}}</td>
+                                <td>{{winehouse.self_register?'Livre':'Via Painel'}}</td>
+                                <td class="text-center">
+                                    <button class="btn btn-xs btn-info" ng-click="AlteraSenhaWinehouse(winehouse)"><i
+                                            class="fa fa-lock"></i></button>
+                                    <button class="btn btn-xs btn-warning" ng-click="AlteraWinehouse(winehouse)"><i
+                                            class="fa fa-edit"></i></button>
+                                    <button class="btn btn-xs btn-danger" ng-click="ExcluiWinehouse(winehouse)"><i
+                                            class="fa fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <dir-pagination-controls pagination-id="pagWinehouses" class="pull-right"></dir-pagination-controls>
+                </div>
+                <div class="overlay" ng-if="winehousesLoad">
+                    <i class="fa fa-sync fa-spin"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="box box-warning" ng-if="WinehouseAlterar">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Alterar Winehouse</h3>
+                </div>
+                <div class="box-body">
+                    <p><small>Esta Winehouse se registrou livremente.</small></p>
+                    <div class="form-group">
+                        <label>Nome Fantasia</label>
+                        <input class="form-control" placeholder="Digite o nome do Winehouse" type="text"
+                            ng-model="WinehouseAlterar.name" ng-disabled="uploadFlag" />
+                    </div>
+                    <div class="form-group">
+                        <label>Razão Social</label>
+                        <input class="form-control" placeholder="Digite a razão social do Winehouse" type="text"
+                            ng-model="WinehouseAlterar.business_name" ng-disabled="uploadFlag" />
+                    </div>
+                    <div class="form-group">
+                        <label>Responsável</label>
+                        <input class="form-control" placeholder="Digite o nome do responsável" type="text"
+                            ng-model="WinehouseAlterar.contact" ng-disabled="uploadFlag" />
+                    </div>
+                    <div class="form-group">
+                        <label>Endereço</label>
+                        <input class="form-control" placeholder="Digite o endereço" type="text"
+                            ng-model="WinehouseAlterar.address" ng-disabled="uploadFlag" />
+                    </div>
+                    <div class="form-group">
+                        <label>Cidade</label>
+                        <input class="form-control" placeholder="Digite a cidade" type="text"
+                            ng-model="WinehouseAlterar.city" ng-disabled="uploadFlag" />
+                    </div>
+                    <div class="form-group">
+                        <label>Bairro</label>
+                        <input class="form-control" placeholder="Digite o bairro" type="text"
+                            ng-model="WinehouseAlterar.region" ng-disabled="uploadFlag" />
+                    </div>
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <input class="form-control" placeholder="Digite o estado" type="text"
+                            ng-model="WinehouseAlterar.state" mask="@@" mask-restrict="reject" mask-limit="true"
+                            ng-disabled="uploadFlag" />
+                    </div>
+                    <div class="form-group">
+                        <label>CEP</label>
+                        <input class="form-control" placeholder="Digite o cep" type="text"
+                            ng-model="WinehouseAlterar.cep" mask="99999-999" mask-restrict="reject" mask-limit="true"
+                            ng-disabled="uploadFlag" />
+                    </div>
+                    <div class="form-group">
+                        <label>Telefone</label>
+                        <input class="form-control" placeholder="Digite o telefone" type="text"
+                            ng-model="WinehouseAlterar.phone" ng-disabled="uploadFlag" />
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input class="form-control" placeholder="Digite o email" disabled="disabled" type="text"
+                            ng-model="WinehouseAlterar.email" />
+                    </div>
+                    <div class="form-group">
+                        <label>Regime Tributário:</label>
+                        <select class="form-control" ng-model="WinehouseAlterar.tax_type" ng-disabled="uploadFlag">
+                            <option value="">Selecione</option>
+                            <option value="lucro_real">Lucro Real</option>
+                            <option value="lucro_presumido">Lucro Presumido</option>
+                            <option value="simples_nacional">Simples Nacional</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>CNPJ</label>
+                        <input class="form-control" placeholder="Digite o cnpj" type="text"
+                            ng-model="WinehouseAlterar.cnpj" ng-disabled="uploadFlag" mask="99.999.999/9999-99"
+                            mask-restrict="reject" mask-limit="true" />
+                    </div>
+                    <div class="form-group">
+                        <label>% Comissão</label>
+                        <input class="form-control" placeholder="Digite a comissão" type="text"
+                            ng-model="WinehouseAlterar.fee_percentage" ng-disabled="uploadFlag" />
+                    </div>
+                    <div class="form-group">
+                        <label>Cadastro de Produtos</label>
+                        <label><input placeholder="Digite a comissão" type="checkbox"
+                                ng-model="WinehouseAlterar.can_add_products" ng-disabled="uploadFlag" /> permitir
+                            cadastro de produtos</label>
+                    </div>
+                    <div class="form-group" flow-init="{singleFile:true}" flow-upload-started="ToggleUploadFlag(true)"
+                        flow-complete="ToggleUploadFlag(false)"
+                        flow-file-added="!!{png:1,jpg:1,jpeg:1}[$file.getExtension()]"
+                        flow-files-submitted="$flow.upload()"
+                        flow-file-success="DefineImagemWinehouseAlterar($message, $flow)">
+                        <label>Imagem: <i class="fa fa-spin fa-spinner" ng-if="uploadFlag"></i></label>
+                        <div>
+                            <a data-href="#" class="btn btn-xs btn-primary" ng-hide="$flow.files.length" flow-btn
+                                flow-attrs="{accept:'image/*'}" ng-disabled="uploadFlag">Selecionar imagem</a>
+                            <a data-href="#" class="btn btn-xs btn-warning" ng-show="$flow.files.length" flow-btn
+                                flow-attrs="{accept:'image/*'}" ng-disabled="uploadFlag">Trocar</a>
+                            <a data-href="#" class="btn btn-xs btn-danger" ng-show="$flow.files.length"
+                                ng-click="CancelaImagem($flow, WinehouseAlterar.id_image)"
+                                ng-disabled="uploadFlag">Remover</a>
+                        </div>
+                        <p><small>Envie apenas imagens JPG ou PNG.</small></p>
+                        <div class="thumbnail">
+                            <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&text=sem+imagem"
+                                ng-hide="$flow.files.length||WinehouseAlterar.image" />
+                            <img src="{{APIBaseUrl+WinehouseAlterar.image}}"
+                                ng-if="WinehouseAlterar.image&&!$flow.files.length" />
+                            <img flow-img="$flow.files[0]" ng-show="$flow.files.length" />
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-default" ng-click="AlteraWinehouse(false)"
+                        ng-disabled="uploadFlag">Cancelar</button>
+                    <button type="submit" class="btn btn-primary pull-right" ng-click="SalvarWinehouse()"
+                        ng-disabled="uploadFlag">Alterar</button>
+                </div>
+                <div class="overlay" ng-if="alterarWinehouseLoad">
+                    <i class="fa fa-sync fa-spin"></i>
+                </div>
+            </div>
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Cadastrar Winehouse</h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group">
+                        <label>Nome Fantasia</label>
+                        <input class="form-control" placeholder="Digite o nome" type="text"
+                            ng-model="NovoWinehouse.name" ng-disabled="uploadFlag" />
+                    </div>
+                    <div class="form-group">
+                        <label>Razão Social</label>
+                        <input class="form-control" placeholder="Digite a razão social do Winehouse" type="text"
+                            ng-model="NovoWinehouse.business_name" ng-disabled="uploadFlag" />
+                    </div>
+                    <div class="form-group">
+                        <label>Responsável</label>
+                        <input class="form-control" placeholder="Digite o nome do responsável" type="text"
+                            ng-model="NovoWinehouse.contact" ng-disabled="uploadFlag" />
+                    </div>
+                    <div class="form-group">
+                        <label>Endereço</label>
+                        <input class="form-control" placeholder="Digite o endereço" type="text"
+                            ng-model="NovoWinehouse.address" ng-disabled="uploadFlag" />
+                    </div>
+                    <div class="form-group">
+                        <label>Cidade</label>
+                        <input class="form-control" placeholder="Digite a cidade" type="text"
+                            ng-model="NovoWinehouse.city" ng-disabled="uploadFlag" />
+                    </div>
+                    <div class="form-group">
+                        <label>Bairro</label>
+                        <input class="form-control" placeholder="Digite o bairro" type="text"
+                            ng-model="NovoWinehouse.region" ng-disabled="uploadFlag" />
+                    </div>
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <input class="form-control" placeholder="Digite o estado" type="text"
+                            ng-model="NovoWinehouse.state" mask="@@" mask-restrict="reject" mask-limit="true"
+                            ng-disabled="uploadFlag" />
+                    </div>
+                    <div class="form-group">
+                        <label>CEP</label>
+                        <input class="form-control" placeholder="Digite o cep" type="text" ng-model="NovoWinehouse.cep"
+                            mask="99999-999" mask-restrict="reject" mask-limit="true" ng-disabled="uploadFlag" />
+                    </div>
+                    <div class="form-group">
+                        <label>Telefone</label>
+                        <input class="form-control" placeholder="Digite o telefone" type="text"
+                            ng-model="NovoWinehouse.phone" mask="99 99999?-9999" mask-restrict="reject"
+                            mask-limit="true" ng-disabled="uploadFlag" />
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input class="form-control" placeholder="Digite o email" type="text"
+                            ng-model="NovoWinehouse.email" ng-disabled="uploadFlag" />
+                    </div>
+                    <div class="form-group">
+                        <label>CNPJ</label>
+                        <input class="form-control" placeholder="Digite o cnpj" type="text"
+                            ng-model="NovoWinehouse.cnpj" ng-disabled="uploadFlag" mask="99.999.999/9999-99"
+                            mask-restrict="reject" mask-limit="true" />
+                    </div>
+                    <div class="form-group">
+                        <label>Regime Tributário:</label>
+                        <select class="form-control" ng-model="NovoWinehouse.tax_type" ng-disabled="uploadFlag">
+                            <option value="">Selecione</option>
+                            <option value="lucro_real">Lucro Real</option>
+                            <option value="lucro_presumido">Lucro Presumido</option>
+                            <option value="simples_nacional">Simples Nacional</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>% Comissão</label>
+                        <input class="form-control" placeholder="Digite a comissão" type="text"
+                            ng-model="NovoWinehouse.fee_percentage" ng-disabled="uploadFlag" />
+                    </div>
+                    <div class="form-group">
+                        <label>Cadastro de Produtos</label>
+                        <label><input placeholder="Digite a comissão" type="checkbox"
+                                ng-model="NovoWinehouse.can_add_products" ng-disabled="uploadFlag" /> permitir cadastro
+                            de produtos</label>
+                    </div>
+                    <div class="form-group" flow-init="{singleFile:true}" flow-upload-started="ToggleUploadFlag(true)"
+                        flow-complete="ToggleUploadFlag(false)"
+                        flow-file-added="!!{png:1,jpg:1,jpeg:1}[$file.getExtension()]"
+                        flow-files-submitted="$flow.upload()"
+                        flow-file-success="DefineImagemNovoWinehouse($message, $flow)">
+                        <label>Imagem: <i class="fa fa-spin fa-spinner" ng-if="uploadFlag"></i></label>
+                        <div>
+                            <a data-href="#" class="btn btn-xs btn-primary" ng-hide="$flow.files.length" flow-btn
+                                flow-attrs="{accept:'image/*'}" ng-disabled="uploadFlag">Selecionar imagem</a>
+                            <a data-href="#" class="btn btn-xs btn-warning" ng-show="$flow.files.length" flow-btn
+                                flow-attrs="{accept:'image/*'}" ng-disabled="uploadFlag">Trocar</a>
+                            <a data-href="#" class="btn btn-xs btn-danger" ng-show="$flow.files.length"
+                                ng-click="CancelaImagem($flow, NovoWinehouse.id_image)"
+                                ng-disabled="uploadFlag">Remover</a>
+                        </div>
+                        <p><small>Envie apenas imagens JPG ou PNG.</small></p>
+                        <div class="thumbnail">
+                            <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&text=sem+imagem"
+                                ng-hide="$flow.files.length" />
+                            <img flow-img="$flow.files[0]" ng-show="$flow.files.length" />
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-primary pull-right" ng-click="CriaNovoWinehouse()"
+                        ng-disabled="uploadFlag">Cadastrar</button>
+                </div>
+                <div class="overlay" ng-if="novoWinehouseLoad">
+                    <i class="fa fa-sync fa-spin"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

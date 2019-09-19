@@ -1,0 +1,161 @@
+<section class="content-header">
+    <h1>Ver Kit: {{DadosKit.name}}</h1>
+    <ol class="breadcrumb">
+        <li><a href="#!/kits"><i class="fa fa-box"></i> Kits</a></li>
+        <li class="active">Ver Kit</li>
+    </ol>
+</section>
+<section class="content container-fluid">
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">Dados do Kit</h3>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="form-group col-sm-4">
+                    <label>Nome:</label>
+                    <input type="text" ng-model="DadosKit.name" class="form-control" />
+                </div>
+                <div class="form-group col-sm-2">
+                    <label>Valor Total:</label>
+                    <div class="input-group">
+                        <span class="input-group-addon">R$</span>
+                        <input type="number" min="0" step="0.01" disabled ng-model="DadosKit.price" class="form-control" />
+                    </div>
+                </div>
+                <!-- <div class="form-group col-sm-3">
+                    <label>Embalagem:</label>
+                    <select class="form-control" ng-model="DadosKit.package_id" ng-change="AtualizaLimiteItens()">
+                        <option value="{{package.id}}" ng-repeat="package in ListaEmbalagens">
+                            {{package.name}} <small>({{package.size}})</small>
+                        </option>
+                    </select>
+                </div -->
+                <div class="form-group col-sm-3">
+                    <label>Embalagem:</label>
+                    <div style="display: flex; ">
+                        <input  type="text" style="margin: 0 10px 0 0" class="form-control" placeholder="minimo">
+                        <input  type="text" style="margin: 0 10px 0 0" class="form-control" placeholder="maximo">
+                    </div>
+                </div>
+                <div class="form-group col-sm-3">
+                    <label>Qtd. Itens:</label>
+                    <div>
+                        {{ContagemItens()}} / {{LimiteItens}}
+                        <span class="text-danger" ng-if="ContagemItens()>LimiteItens"><i class="fa fa-exclamation-triangle"></i></span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label>Descrição:</label>
+                    <input type="text" ng-model="DadosKit.description" class="form-control" />
+                </div>
+                <div class="form-group col-sm-3">
+                    <label>Layout</label>
+                    <select class="form-control">
+                        <option>Padrão</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="overlay" ng-if="load">
+            <i class="fa fa-sync fa-spin"></i>
+        </div>
+    </div>
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">Produtos</h3>
+        </div>
+        <div class="box-body">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <h4>Selecione os Produtos:</h4>
+                        <div class="table-responsive">
+                            <table class="table table-condensed table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Produto</th>
+                                        <th>Estoque Atual</th>
+                                        <th class="text-center">
+                                            <i class="fa fa-cog"></i>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input type="text" class="form-control" ng-model="ProductFilter.name" />
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr dir-paginate="produto in ListaProdutos | orderBy:'name':false | filter:ProductFilter | itemsPerPage:15"
+                                        pagination-id="pagKitVPNS">
+                                        <td>{{produto.name}}</td>
+                                        <td>{{produto.quantity}}</td>
+                                        <td>
+                                            <button class="btn btn-xs btn-primary" title="Selecionar este produto"
+                                                ng-click="SelecionaProduto(produto)" ng-disabled="ContagemItens()>=LimiteItens">
+                                                <i class="fa fa-arrow-right"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <dir-pagination-controls pagination-id="pagKitVPNS"></dir-pagination-controls>
+                    </div>
+                    <div class="col-sm-7">
+                        <h4>Produtos Selecionados:</h4>
+                        <div class="table-responsive">
+                            <table class="table table-condensed table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Produto</th>
+                                        <th>Quantidade</th>
+                                        <th>Valor Unitário</th>
+                                        <th>Estoque Atual</th>
+                                        <th class="text-center">
+                                            <i class="fa fa-cog"></i>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr dir-paginate="produto in ListaProdutos | orderBy:'name':false | filter:{selecionado:true} | itemsPerPage:15"
+                                        pagination-id="pagKitVPS">
+                                        <td>{{produto.name}}</td>
+                                        <td>
+                                            <input type="number" min="1" ng-model="produto.kit_quantity" class="form-control"
+                                                ng-change="VerificaCalculoKit()" />
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon">R$</span>
+                                                <input type="number" min="1" ng-model="produto.unit_price" class="form-control"
+                                                    ng-change="CalculaValorKit()" />
+                                            </div>
+                                        </td>
+                                        <td>{{produto.quantity}}</td>
+                                        <td>
+                                            <button class="btn btn-xs btn-warning" title="Selecionar este produto"
+                                                ng-click="RemoveProduto(produto)">
+                                                <i class="fa fa-arrow-left"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <dir-pagination-controls pagination-id="pagKitVPS"></dir-pagination-controls>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="form-group">
+                <a href="#!/kits" class="btn btn-default">Voltar</a>
+                <button class="btn btn-primary pull-right" ng-click="SalvarKit()">Salvar Kit</button>
+            </div>
+        </div>
+        <div class="overlay" ng-if="load">
+            <i class="fa fa-sync fa-spin"></i>
+        </div>
+    </div>
+</section>

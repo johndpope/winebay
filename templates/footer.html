@@ -1,0 +1,88 @@
+<span class="rainbow-line lg"></span>
+<footer ng-controller="FooterController">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="footer-block">
+                    <a href="#!/"><img src="{{APIBaseUrl + DadosSite.footer_logo}}" class="img-responsive brand" /></a>
+                    <div ng-bind-html="DadosSite.footer_text | unsafe"></div>
+                </div>
+                <div class="footer-block social">
+                    <h4>Redes Sociais</h4>
+                    <a href="{{DadosSite.facebook}}" ng-if="DadosSite.facebook!=''" target="_blank"><i
+                            class="fab fa-facebook-square"></i></a>
+                    <a href="{{DadosSite.instagram}}" ng-if="DadosSite.instagram!=''" target="_blank"><i
+                            class="fab fa-instagram"></i></a>
+                    <a href="{{DadosSite.twitter}}" ng-if="DadosSite.twitter!=''" target="_blank"><i
+                            class="fab fa-twitter-square"></i></a>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="footer-block list">
+                            <h4>Dúvidas?</h4>
+                            <span class="item"><a href="#!/contato">Contato</a></span>
+                            <span class="item"><a href="#!/faq">FAQ</a></span>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="footer-block list">
+                            <h4>Mapa do Site</h4>
+                            <span class="item"><a href="#!/">Home</a></span>
+                            <span class="item"><a href="#!/cadastro">Cadastro</a></span>
+                            <span class="item"><a data-href="#" ng-click="ShowMenu()">Login</a></span>
+                            <span class="item"><a href="#!/institucional">Institucional</a></span>
+                            <span class="item"><a href="{{PanelUrl}}" target="_blank">Painel Administrativo</a></span>
+                            <span class="item"><a href="{{WinehouseUrl}}" target="_blank">Painel da Winehouse</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="footer-block">
+                    <h4>Newsletter</h4>
+                    <div class="form-group has-overlay" ng-if="!newsletterSuccess&&!newsletterWarning">
+                        <p>Receba todas as ofertas do <strong>WineBay</strong> no seu e-mail:</p>
+                        <input type="text" ng-model="newsletterData.name" class="form-control" placeholder="Nome"
+                            ng-disabled="newsletterLoad" />
+                        <input type="text" ng-model="newsletterData.email" class="form-control" placeholder="E-mail"
+                            ng-disabled="newsletterLoad" />
+                        <button class="btn btn-success btn-block text-center" ng-click="SendNewsletter()"
+                            ng-disabled="newsletterLoad">assinar</button>
+                        <span class="overlay" ng-if="newsletterLoad"><i class="fa fa-spin fa-sync"></i></span>
+                    </div>
+                    <div class="form-group newsletter-group newsletter-success" ng-if="newsletterSuccess">
+                        <i class="fa fa-check-circle"></i>
+                        <span>
+                            Recebemos seus dados!
+                            <small>Em breve você receberá ofertas exclusivas.</small>
+                        </span>
+                    </div>
+                    <div class="form-group newsletter-group newsletter-warning" ng-if="newsletterWarning">
+                        <i class="fa fa-times"></i>
+                        <span>
+                            Você já faz parte!
+                            <small>O seu e-mail já está cadastrado em nossa Newsletter.</small>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="footer-block">
+                    <h4>Formas de Pagamento</h4>
+                    <img src="/assets/img/icons/visa.png" class="card-icon" />
+                    <img src="/assets/img/icons/mastercard.png" class="card-icon" />
+                    <img src="/assets/img/icons/americanexpress.png" class="card-icon" />
+                    <img src="/assets/img/icons/dinersclub.png" class="card-icon" />
+                    <img src="/assets/img/icons/boleto.png" class="card-icon" />
+                </div>
+                <div class="footer-block">
+                    <h4>Auditoria</h4>
+                    <img src="/assets/img/site-blindado.png" class="footer-image" />
+                    <img src="/assets/img/ebit.jpg" class="footer-image" />
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>

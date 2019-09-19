@@ -1,0 +1,59 @@
+<div class="page-banner row" style="background-image: url('/assets/img/contato.jpg')">
+    <h1>Fale Conosco</h1>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-7">
+            <div class="home-group home-filtered">
+                <div class="group-header">
+                    <h3>
+                        <span class="bolder">Formulário</span>
+                    </h3>
+                    <span class="rainbow-line"></span>
+                </div>
+                <div class="form-info">
+                    Sinta-se à vontade para nos enviar suas dúvidas, críticas ou sugestões.
+                </div>
+            </div>
+            <div class="form-lg">
+                <div class="form-group">
+                    <label>Nome Completo:</label>
+                    <input class="form-control" type="text" ng-model="novoContato.Nome" />
+                </div>
+                <div class="form-group">
+                    <label>E-Mail:</label>
+                    <input class="form-control" type="text" ng-model="novoContato.Email" />
+                </div>
+                <div class="form-group">
+                    <label>Telefone:</label>
+                    <input class="form-control" type="text" ng-model="novoContato.Telefone" />
+                </div>
+                <div class="form-group">
+                    <label>Assunto:</label>
+                    <input class="form-control" type="text" ng-model="novoContato.Assunto" />
+                </div>
+                <div class="form-group">
+                    <label>Mensagem:</label>
+                    <textarea class="form-control" ng-model="novoContato.Nome"></textarea>
+                </div>
+                <div class="form-group">
+                    <label rel="checkbox">
+                        <input type="checkbox" ng-model="novoContato.ReceberEMail" value="true" /> Desejo receber
+                        conversa por e-mail.
+                    </label>
+                </div>
+                <div class="form-group text-right">
+                    <button class="btn btn-xlg btn-bolder btn-primary">Enviar</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4 col-sm-offset-1 form-lg">
+            <span ng-if="load"><i class="fa fa-spin fa-spinner fa-2x"></i></span>
+            <div class="form-spacer"></div>
+            <div class="form-group" ng-repeat="contato in DadosPagina">
+                <label>{{contato.title}}</label>
+                {{contato.text}}
+            </div>
+        </div>
+    </div>
+</div>

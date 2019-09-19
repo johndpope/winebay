@@ -1,0 +1,122 @@
+<section class="content-header">
+    <h1>Importar Excel</h1>
+    <ol class="breadcrumb">
+        <li><i class="fa fa-cog"></i> Manutenção</li>
+        <li class="active">Importar Excel</li>
+    </ol>
+</section>
+<section class="content container-fluid">
+    <div class="callout callout-warning" ng-if="!ListaImportar.length">
+        <h4><i class="fa fa-exclamation-triangle"></i> Atenção</h4>
+        <p>
+            A planilha deve estar no padrão correto, caso contrário a importação pode não acontecer corretamente.
+            <a class="btn btn-xs btn-primary pull-right" href="{{APIBaseUrl+ '/modelo_planilha.xlsx'}}">Fazer download
+                do
+                modelo
+            </a>
+        </p>
+    </div>
+    <div class="box" ng-if="!ListaImportar.length">
+        <div class="box-header">
+            <h3 class="box-title">
+                Enviar Arquivo
+            </h3>
+        </div>
+        <div class="box-body">
+            <div class="form-group" flow-init="{singleFile:true, target:APIBaseUrl+'/maintenance/upload'}"
+                flow-upload-started="ToggleUploadFlag(true)" flow-complete="ToggleUploadFlag(false)" flow-target="lorem"
+                flow-file-added="!!{xls:1,xlsx:1}[$file.getExtension()]" flow-files-submitted="$flow.upload()"
+                flow-file-success="ProcessaRetornoUpload($message, $flow)">
+                <label>Planilha:</label>
+                <div>
+                    <a data-href="#" class="btn btn-xs btn-primary" ng-hide="$flow.files.length" flow-btn
+                        flow-attrs="{accept:'application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}"
+                        ng-disabled="uploadFlag">Selecionar arquivo</a>
+                </div>
+                <p><small>Envie apenas arquivos XLS ou XLSX.</small></p>
+            </div>
+        </div>
+        <div class="overlay" ng-if="uploadFlag">
+            <i class="fa fa-sync fa-spin"></i>
+        </div>
+    </div>
+    <div class="box" ng-if="ListaImportar.length">
+        <div class="box-header">
+            <h3 class="box-title">
+                Dados Encontrados na Planilha
+            </h3>
+            <button class="btn btn-primary btn-sm pull-right" ng-click="ResetImportar()">Enviar Novo Arquivo</button>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h4>
+                        A planilha inserida possui {{ListaImportar.length}} produtos.
+                        <button class=" pull-right btn btn-lg btn-success" ng-click="ImportarDados()"
+                            ng-disabled="importFlag">
+                            Importar Dados
+                        </button>
+                    </h4>
+                </div>
+            </div>
+            <hr />
+            <div ng-show="importFlag">
+                <p><strong>Não feche a aba até o final do processamento.</strong> O processo poderá demorar caso
+                    existam muitos produtos.</p>
+            </div>
+            <table class="table table-condensed table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Importador</th>
+                        <th>Nome</th>
+                        <th>Produtor</th>
+                        <th>País</th>
+                        <th>Uva</th>
+                        <th>Tipicidade</th>
+                        <th>Região</th>
+                        <th>Graduação</th>
+                        <th>Tamanho<small>(ml)</small></th>
+                        <th>Imagem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="prod in ListaImportar">
+                        <td><input class="form-control" ng-model="prod.importer" ng-disabled="importLoad" /></td>
+                        <td><input class="form-control" ng-model="prod.name" ng-disabled="importLoad" /></td>
+                        <td><input class="form-control" ng-model="prod.productor" ng-disabled="importLoad" /></td>
+                        <td><input class="form-control" ng-model="prod.country" ng-disabled="importLoad" /></td>
+                        <td><input class="form-control" ng-model="prod.grape" ng-disabled="importLoad" /></td>
+                        <td><input class="form-control" ng-model="prod.type" ng-disabled="importLoad" /></td>
+                        <td><input class="form-control" ng-model="prod.region" ng-disabled="importLoad" /></td>
+                        <td><input class="form-control" ng-model="prod.graduation" ng-disabled="importLoad" /></td>
+                        <td><input class="form-control" ng-model="prod.size" ng-disabled="importLoad" /></td>
+                        <td>
+                            <div flow-init="{singleFile:true}" flow-upload-started="prod.upload=true"
+                                flow-complete="prod.upload=false"
+                                flow-file-added="!!{png:1,jpg:1,jpeg:1}[$file.getExtension()]"
+                                flow-files-submitted="$flow.upload()" flow-file-success="prod.id_image_thumb=$message">
+                                <span ng-show="$flow.files.length">{{$flow.files[0].name}}</span>
+                                <a data-href="#" class="btn btn-xs btn-primary" flow-btn flow-attrs="{accept:'image/*'}"
+                                    ng-disabled="prod.upload">
+                                    {{$flow.files.length?'':'Selecionar imagem'}}
+                                    <i class="fa fa-sync" ng-show="$flow.files.length"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <hr />
+            <div class="text-center">
+                <button class="btn btn-lg btn-success" ng-click="ImportarDados()" ng-disabled="importFlag">
+                    Importar Dados
+                </button>
+                <p><strong>Não feche a aba até o final do processamento.</strong> O processo poderá demorar caso
+                    existam muitos produtos.</p>
+            </div>
+        </div>
+        <div class="overlay" ng-if="importFlag">
+            <i class="fa fa-sync fa-spin"></i>
+        </div>
+    </div>
+</section>

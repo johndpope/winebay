@@ -1,0 +1,101 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-title">
+                <div class="col-xs-10 col-sm-5 col-md-4 text-center col-centered">
+                    <h2>Cadastre-se</h2>
+                    <span class="rainbow-line"></span>
+                </div>
+            </div>
+        </div>
+        <form class="col-sm-8 col-sm-offset-2 form-lg" ng-submit="CriarCadastro()">
+            <div class="form-group h4 text-center" ng-if="UserLogged">
+                <strong>Você já efetuou login!</strong> <a href="#!/">Clique aqui</a> para ir à página inicial.
+            </div>
+            <div class="form-group top-space">
+                <label>Nome Completo:</label>
+                <input class="form-control" type="text" required ng-model="DadosCadastro.NomeCompleto"
+                    ng-disabled="load" />
+            </div>
+            <div class="form-group">
+                <label>CPF: <small>Necessário para enviar a nota fiscal do seu pedido</small></label>
+                <input class="form-control" type="text" ng-model="DadosCadastro.CPF" ng-disabled="load"
+                    mask="999.999.999-99" mask-restrict="select" mask-limit="true" />
+            </div>
+            <div class="form-group">
+                <label>E-Mail:</label>
+                <input class="form-control" type="email" required ng-model="DadosCadastro.EMail" ng-disabled="load" />
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <label>Senha:</label>
+                    <div class="input-group">
+                        <input class="form-control" type="{{showPassR1?'text':'password'}}" required
+                            ng-model="DadosCadastro.Senha" ng-disabled="load" />
+                        <span class="input-group-addon cursor-pointer" ng-click="showPassR1=!showPassR1">
+                            <i class="fas fa-eye{{showPassR1?'':'-slash'}}"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label>Confirmar Senha:</label>
+                    <div class="input-group">
+                        <input class="form-control" type="{{showPassR2?'text':'password'}}" required ng-model="DadosCadastro.ConfSenha" />
+                        <span class="input-group-addon cursor-pointer" ng-click="showPassR2=!showPassR2">
+                            <i class="fas fa-eye{{showPassR2?'':'-slash'}}"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Sexo:</label>
+                <label rel="radio"><input type="radio" ng-model="DadosCadastro.Sexo" value="F" ng-disabled="load"
+                        name="cadastro_sexo" />
+                    Feminino</label>
+                <label rel="radio"><input type="radio" ng-model="DadosCadastro.Sexo" value="M" ng-disabled="load"
+                        name="cadastro_sexo" />
+                    Masculino</label>
+            </div>
+            <div class="form-group">
+                <label>Data de Nascimento:</label>
+                <input class="form-control" type="text" ng-model="DadosCadastro.DataNascimento" ng-disabled="load"
+                    mask="99/99/9999" mask-restrict="select" mask-limit="true" />
+            </div>
+            <div class="form-group">
+                <label>Telefone:</label>
+                <input class="form-control" type="tel" required ng-model="DadosCadastro.Telefone" ng-disabled="load"
+                    mask="99 99999?-9999" mask-restrict="select" mask-limit="true" />
+            </div>
+            <div class="form-group">
+                <label rel="checkbox">
+                    <input type="checkbox" ng-model="DadosCadastro.CienteLei" value="true" ng-disabled="load" />
+                    Estou ciente da proibição legal contida no art. 81, II da Lei nº8.069/90 de venda de bebidas
+                    alcoólicas para crianças e adolescentes menores de 18 anos.
+                </label>
+            </div>
+            <div class="form-group">
+                <label rel="checkbox">
+                    <input type="checkbox" ng-model="DadosCadastro.Newsletter" value="true" ng-disabled="load" />
+                    Desejo receber as promoções por e-mail.
+                </label>
+            </div>
+            <div class="form-group text-center top-space">
+                <button class="btn btn-xlg btn-bolder btn-primary" type="submit" ng-disabled="load">
+                    <span ng-show="!load">Criar Cadastro</span>
+                    <span ng-show="load"><i class="fa fa-spin fa-sync"></i></span>
+                </button>
+            </div>
+        </form>
+        <div class="col-sm-12 text-center form-actions">
+            <div class="uppercase-info"><span>Quer trazer os seus produtos para a {{ProjectName}}?</span></div>
+            <div class="top-space"></div>
+            <p><a class="btn btn-xlg btn-bolder btn-success" href="{{WinehouseRegisterUrl}}" target="_blank">Cadastre
+                    sua Winehouse!</a></p>
+        </div>
+        <div class="col-sm-12 form-footer">
+            <p>
+                Já tem cadastro? <a href="#!/login{{Destination?'/redirect/' + Destination:''}}">entrar</a>
+            </p>
+        </div>
+    </div>
+</div>

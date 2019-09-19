@@ -1,0 +1,97 @@
+<section class="content-header">
+    <h1>Produtos</h1>
+    <ol class="breadcrumb">
+        <li class="active">
+            <i class="fa fa-cubes"></i> Produtos</li>
+    </ol>
+</section>
+<section class="content container-fluid">
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">
+                Adicionar Produto
+            </h3>
+        </div>
+        <div class="box-body">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <p>Para adicionar um produto, basta preencher os campos <strong>Preço</strong>, <strong>Quantidade</strong> e <strong>Safra</strong></p>
+                        <div class="table-responsive">
+                            <table class="table table-condensed table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Produto</th>
+                                        <th>Produtor</th>
+                                        <th>País</th>
+                                        <th>Uva</th>
+                                        <th>Importador</th>
+                                        <th>Preço</th>
+                                        <th>Quantidade</th>
+                                        <th>Safra</th>
+                                        <th class="text-center">
+                                            <i class="fa fa-cog"></i>
+                                        </th>
+                                    </tr>
+                                    <tr ng-if="!NovoWinehouseProduto.id_product">
+                                        <td>
+                                            <input type="text" class="form-control" ng-model="ProductFilter.name" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" ng-model="ProductFilter.productor" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" ng-model="ProductFilter.country" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" ng-model="ProductFilter.grape" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" ng-model="ProductFilter.importer" />
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr dir-paginate="produto in ListaProdutos | orderBy:'name':false | filter:ProductFilter | itemsPerPage:15"
+                                        pagination-id="pagProdutosWH">
+                                        <td>{{produto.name}}</td>
+                                        <td>{{produto.productor}}</td>
+                                        <td>{{produto.country}}</td>
+                                        <td>{{produto.grape}}</td>
+                                        <td>{{produto.importer}}</td>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon">R$</span>
+                                                <input type="number" min="0" step="0.1" ng-model="produto.price" class="form-control" />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input type="number" min="1" step="1" ng-model="produto.quantity" class="form-control" />
+                                        </td>
+                                        <td>
+                                            <input type="text" ng-model="produto.crop" class="form-control" />
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-xs btn-primary" ng-click="MostraInfo(produto)">
+                                                + infos
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <dir-pagination-controls pagination-id="pagProdutosWH"></dir-pagination-controls>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="form-group">
+                <a href="#!/produtos" class="btn btn-default">Voltar</a>
+                <button class="btn btn-primary pull-right" ng-click="CriarProduto()">Criar Produtos</button>
+            </div>
+        </div>
+        <div class="overlay" ng-if="load">
+            <i class="fa fa-sync fa-spin"></i>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,236 @@
+<header ng-controller="HeaderController" class="navbar navbar-fixed-top {{headerType}}" ng-mouseleave="FecharCaixa()">
+    <div class="container">
+        <div class="row" ng-show="headerType=='light'">
+            <div class="col-sm-3 hidden-xs">
+                <div class="form-group" ng-show="CurrentPage!='buscageral'">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Encontre seu vinho"
+                            ng-model="BuscaGeral" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-default btn-grey" ng-click="ExecutaBuscaGeral()"><i
+                                    class="glyphicon glyphicon-search"></i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-5 text-center">
+                <a href="#!/"><img ng-src="{{APIBaseUrl + DadosSite.main_logo}}" class="main-logo" /></a>
+                <button class="navbar-toggle collapsed btn btn-default pull-right btn-lg" data-toggle="collapse"
+                    data-target="#header-mobile-menu" aria-expanded="false">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <div class="col-sm-4 hidden-xs">
+                <div class="row">
+                    <div id="headerUserArea" class="header-item col-sm-6" ng-if="UserData"
+                        uib-popover-template="'userPopoverTemplate'" popover-trigger="'outsideClick'"
+                        popover-placement="bottom" popover-title="Área do Cliente" popover-class="header-popover">
+                        <div class="icon">
+                            <!-- <img class="img-responsive img-circle" src="{{UserData.avatar}}" /> -->
+                            <i class="far fa-user"></i>
+                        </div>
+                        <div class="text">
+                            <small>Bem vindo(a),</small>
+                            {{UserData.name}}
+                        </div>
+                        <div class="arrow"><i class="fa fa-chevron-down"></i></div>
+                        <script type="text/ng-template" id="userPopoverTemplate">
+                            <div class="has-overlay">
+                                <div class="form form-header">
+                                    <div class="form-group">
+                                            <a href="#!/cliente/pedidos" class="btn btn-primary btn-block btn-bolder">Meus Pedidos</a>
+                                            <a href="#!/cliente/dados" class="btn btn-primary btn-block btn-bolder">Meus Dados</a>
+                                        <button class="btn btn-danger btn-block btn-bolder top-space-md" ng-click="DoLogout()">Logout</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </script>
+                    </div>
+                    <div id="headerUserMenu" class="header-item col-sm-3 col-lg-6" ng-if="!UserData"
+                        uib-popover-template="'loginPopoverTemplate'" popover-trigger="'outsideClick'"
+                        popover-placement="bottom" popover-title="Faça Login" popover-class="header-popover">
+                        <div class="icon"><i class="far fa-user"></i></div>
+                        <div class="text hidden-sm hidden-md">Faça cadastro ou login</div>
+                        <div class="arrow"><i class="fa fa-chevron-down"></i></div>
+                        <script type="text/ng-template" id="loginPopoverTemplate">
+                            <div class="has-overlay">
+                                <form class="form form-header" ng-submit="DoLogin()">
+                                    <div class="form-group">
+                                        <label>E-Mail</label>
+                                        <input type="email" class="form-control" required ng-disabled="loginLoad" placeholder="Digite seu e-mail" ng-model="loginData.email"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Senha</label>
+                                        <div class="input-group">
+                                            <input type="{{showPassLH?'text':'password'}}" class="form-control" required ng-disabled="loginLoad" placeholder="Digite sua senha" ng-model="loginData.password"/>
+                                            <span class="input-group-addon cursor-pointer" ng-click="showPassLH=!showPassLH">
+                                                <i class="fas fa-eye{{showPassLH?'':'-slash'}}"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <button class="btn btn-primary btn-block btn-bolder" type="submit" ng-disabled="loginLoad">Entrar</button>
+                                    </div>
+                                    <!-- <hr class="hr-small"/>
+                                    <div class="form-group">
+                                        <button class="btn btn-primary btn-block btn-bolder btn-facebook" ng-disabled="loginLoad">
+                                            <i class="fab fa-facebook"></i>
+                                            Entrar com Facebook
+                                        </button>
+                                    </div> -->
+                                </form>
+                                <hr />
+                                <div class="text-center">
+                                    <a href="#!/cadastro" class="btn btn-success btn-bolder btn-block" ng-disabled="loginLoad">Cadastre-se</a>
+                                    <a href="{{WinehouseUrl}}" class="btn btn-info btn-bolder btn-block" target="_blank">Painel da Winehouse</a>
+                                </div>
+                                <span class="overlay" ng-if="loginLoad"><i class="fa fa-spin fa-sync"></i></span>
+                            </div>
+                        </script>
+                    </div>
+                    <div class="header-item col-sm-3 col-lg-5 col-lg-offset-1" ng-click="ToggleCaixa()">
+                        <div class="icon"><i class="fas fa-box"></i><span
+                                class="badge absolute hidden-sm hidden-md">{{BoxItemsCount()}}</span></div>
+                        <div class="text hidden-sm hidden-md">Sua<br />Caixa</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="visible-xs">
+            <div class="collapse navbar-collapse" id="header-mobile-menu">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group has-feedback">
+                            <input type="text" class="form-control" placeholder="Encontre seu vinho"
+                                ng-model="wineSearch" />
+                            <i class="glyphicon glyphicon-search form-control-feedback search-icon"></i>
+                        </div>
+                    </div>
+                    <div class="header-item col-xs-12" ng-click="ToggleCaixa()">
+                        <div class="icon"><i class="fas fa-box"></i></div>
+                        <div class="text">
+                            Sua Caixa
+                            <span class="badge pull-right">{{BoxItemsCount()}}</span>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 text-center" ng-if="UserData">
+                        <hr />
+                        <div class="col-xs-4 col-xs-offset-4">
+                            <img class="img-responsive img-circle" src="{{UserData.avatar}}" />
+                        </div>
+                        <div class="col-xs-12">
+                            <small>Bem vindo(a),</small><br />
+                            <h4>{{UserData.name}}</h4>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 has-overlay" ng-if="!UserData">
+                        <hr />
+                        <form class="form form-header" ng-submit="DoLogin()">
+                            <div class="form-group">
+                                <label>E-Mail</label>
+                                <input type="email" required class="form-control" ng-disabled="loginLoad"
+                                    placeholder="Digite seu e-mail" ng-model="loginData.email" />
+                            </div>
+                            <div class="form-group">
+                                <label>Senha</label>
+                                <input type="password" required class="form-control" ng-disabled="loginLoad"
+                                    placeholder="Digite sua senha" ng-model="loginData.password" />
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary btn-block btn-bolder" ng-disabled="loginLoad"
+                                    type="submit">Entrar</button>
+                            </div>
+                            <!-- <hr class="hr-small" />
+                            <div class="form-group">
+                                <button class="btn btn-primary btn-block btn-bolder btn-facebook" ng-disabled="loginLoad">
+                                    <i class="fab fa-facebook"></i>
+                                    Entrar com Facebook
+                                </button>
+                            </div> -->
+                        </form>
+                        <hr />
+                        <div class="text-center">
+                            <h5 class="strong">Cliente novo?</h5>
+                            <a href="#!/cadastro" class="btn btn-success btn-bolder btn-block"
+                                ng-disabled="loginLoad">Cadastre-se</a>
+                        </div>
+                        <span class="overlay" ng-if="loginLoad"><i class="fa fa-spin fa-sync"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row text-center" ng-if="headerType=='dark'">
+            <a href="#!/"><img ng-src="{{APIBaseUrl + DadosSite.footer_logo}}" class="main-logo" /></a>
+        </div>
+    </div>
+    <div id="product-box-container" class="product-box-container" style="display:none">
+        <div class="container">
+            <div class="col-sm-9">
+                <div>
+                    <h4>Sua Caixa <small>Você tem <strong>{{BoxItemsCount()}} produtos</strong> na caixa</small></h4>
+
+                </div>
+                <div class="box-slider">
+                    <div class="slider-content">
+                        <div class="slider-arrow" rel="prev-arrow">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                        <slick id="box-slider" class="is-slick" settings=BoxSlickSettings ng-if="BoxLoaded">
+                            <!-- <div class="winehouse-separator" ng-if="product.divisor"
+                                ng-repeat-start="product in ProductBox track by $index">
+                                <img src="/assets/img/winehouse.png" class="winehouse-icon" />
+                                {{product.winehouse.name}}
+                            </div> -->
+                            <div class="box-item" id="product_box_{{product.id}}"
+                                ng-repeat="product in ProductBox track by $index">
+                                <div class="box-slide-product">
+                                    <div class="product-image">
+                                        <img src="{{APIBaseUrl + product.image}}" />
+                                    </div>
+                                    <div class="product-info">
+                                        <div class="product-name">{{product.name}}</div>
+                                        <div class="product-type">{{product.type.name}} | {{product.size}}</div>
+                                        <div class="product-actions">
+                                            <label class="action-label">Quantidade:</label>
+                                            <div class="input-group product-buy input-group-sm">
+                                                <div class="input-group-btn">
+                                                    <button class="btn btn-sum"
+                                                        ng-click="ProductBoxDecrease(product)"><i
+                                                            class="fas fa-minus"></i></button>
+                                                </div>
+                                                <input type="text" class="form-control" disabled
+                                                    ng-model="product.quant">
+                                                <div class="input-group-btn">
+                                                    <button class="btn btn-sum" ng-click="ProductBoxIncrease(product)"
+                                                        ng-disabled="product.quant>=product.max_count"><i
+                                                            class="fas fa-plus"></i></button>
+                                                </div>
+                                            </div>
+                                            <span class="product-price"><small>R$</small>{{(product.price*product.quant).toFixed(2).replace('.',
+                                                ',')}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </slick>
+                        <div class="slider-arrow" rel="next-arrow">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 box-price">
+                <label class="price-label">subtotal</label>
+                <div class="price-value">
+                    <small>R$</small>
+                    {{CalculaBoxTotal().toFixed(2).replace('.', ',')}}
+                </div>
+                <div class="price-payment">Até 3x de R$ {{(CalculaBoxTotal()/3).toFixed(2).replace('.', ',')}} sem
+                    juros</div>
+                <button class="btn btn-squase btn-block btn-success" ng-disabled="CalculaBoxTotal()==0"
+                    ng-click="FinalizarCompra()">Finalizar
+                    Compra</button>
+            </div>
+        </div>
+    </div>
+</header>

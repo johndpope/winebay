@@ -1,0 +1,42 @@
+<section class="content-header">
+    <h1>Institucional</h1>
+    <ol class="breadcrumb">
+        <li><i class="fas fa-globe"></i> Dados do Site</li>
+        <li class="active">Institucional</li>
+    </ol>
+</section>
+<section class="content container-fluid">
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">Institucional</h3>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label>Título da Página</label>
+                        <input type="text" class="form-control" ng-model="DadosPagina.title" />
+                    </div>
+                    <div class="form-group">
+                        <label>Bloco Superior:</label>
+                        <textarea class="form-control" ng-model="DadosPagina.block1"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Bloco Intermediário:</label>
+                        <textarea class="form-control" ng-model="DadosPagina.block2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Bloco Inferior:</label>
+                        <textarea class="form-control" ng-model="DadosPagina.block3"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <button class="btn btn-primary btn-lg pull-right" ng-click="SalvarAlteracoes()">Salvar Alterações</button>
+        </div>
+        <div class="overlay" ng-if="logoLoad||load">
+            <i class="fa fa-sync fa-spin"></i>
+        </div>
+    </div>
+</section>

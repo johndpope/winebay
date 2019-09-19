@@ -1,0 +1,67 @@
+<section class="content-header">
+    <h1>Banners</h1>
+    <ol class="breadcrumb">
+        <li><i class="fas fa-globe"></i> Dados do Site</li>
+        <li class="active">Banners</li>
+    </ol>
+</section>
+<section class="content container-fluid">
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">Lista de Banners</h3>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="top-space" ng-repeat-start="banner in ListaBanners">
+                        <button class="btn btn-xs btn-danger pull-right" ng-click="RemoveBanner(banner)">remover</button>
+                        <div><strong>URL:</strong> {{banner.url}}</div>
+                        <div>
+                            <img class="img-responsive" ng-src="{{APIBaseUrl + banner.image}}" />
+                        </div>
+                    </div>
+                    <hr ng-repeat-end/>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-sm-12">
+                    <h4>Adicionar Novo Banner</h4>
+                    <div class="form-group">
+                        <label>URL</label>
+                        <input type="text" class="form-control" ng-model="NovoBanner.url" />
+                    </div>
+                    <div class="form-group" flow-init="{singleFile:true, target:APIBaseUrl+'/image/upload/nocrop/1/returnpath/1'}"
+                        flow-upload-started="ToggleUploadFlag(true)" flow-complete="ToggleUploadFlag(false)"
+                        flow-file-added="!!{png:1,jpg:1,jpeg:1}[$file.getExtension()]" flow-files-submitted="$flow.upload()"
+                        flow-file-success="DefineImagem($message, $flow)">
+                        <label>Imagem: </label>
+                        <div>
+                            <a data-href="#" class="btn btn-xs btn-primary" ng-hide="$flow.files.length" flow-btn
+                                flow-attrs="{accept:'image/*'}" ng-disabled="logoLoad">Selecionar imagem</a>
+                            <a data-href="#" class="btn btn-xs btn-warning" ng-show="$flow.files.length" flow-btn
+                                flow-attrs="{accept:'image/*'}" ng-disabled="logoLoad">Trocar</a>
+                            <a data-href="#" class="btn btn-xs btn-danger" ng-show="$flow.files.length" ng-click="CancelaImagem($flow, NovoBanner.image)"
+                                ng-disabled="logoLoad">Remover</a>
+                        </div>
+                        <p><small>Envie apenas imagens JPG ou PNG.</small></p>
+                        <div class="thumbnail">
+                            <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&text=sem+imagem" ng-hide="$flow.files.length||NovoBanner.image" />
+                            <img src="{{APIBaseUrl+DadosSite.footer_logo}}" ng-if="NovoBanner.image&&!$flow.files.length" />
+                            <img flow-img="$flow.files[0]" ng-show="$flow.files.length" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-success" ng-click="AdicionaBanner()">Adicionar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <button class="btn btn-primary btn-lg pull-right" ng-click="SalvarAlteracoes()">Salvar Alterações</button>
+        </div>
+        <div class="overlay" ng-if="logoLoad||load">
+            <i class="fa fa-sync fa-spin"></i>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,48 @@
+<section class="content-header">
+    <h1>Integração Correios</h1>
+    <ol class="breadcrumb">
+        <li><i class="fas fa-plug"></i> Integrações</li>
+        <li class="active">Correios</li>
+    </ol>
+</section>
+<section class="content container-fluid">
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">
+                Dados da Integração
+            </h3>
+            <div class="pull-right">
+                <label>Status:</label>
+                <strong class="text-{{IntegrationData.status?'success':'warning'}}">{{IntegrationData.status?'ATIVO':'EM
+                    PAUSA'}}</strong>
+                <button class="btn btn-primary btn-xs" ng-click="ToggleStatus()"><i class="fa fa-sync"></i></button>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h4>Serviços de Postagem:</h4>
+                    <div class="form-group col-sm-12">
+                        <div ng-repeat="servico in IntegrationData.production_data.services">
+                            <label><input type="checkbox" ng-model="servico.active" /> {{servico.text}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <h4>Serviços Adicionais:</h4>
+                    <div class="form-group col-sm-12">
+                        <div ng-repeat="adicional in IntegrationData.production_data.additional">
+                            <label><input type="checkbox" ng-model="adicional.active" /> {{adicional.text}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <button class="btn btn-primary btn-lg pull-right" ng-click="SalvarAlteracoes()">Salvar Alterações</button>
+        </div>
+        <div class="overlay" ng-if="load">
+            <i class="fa fa-sync fa-spin"></i>
+        </div>
+    </div>
+</section>

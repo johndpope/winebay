@@ -1,0 +1,96 @@
+<section class="content-header">
+    <h1>Frete</h1>
+    <ol class="breadcrumb">
+        <li><i class="fas fa-truck"></i> Frete</li>
+    </ol>
+</section>
+<section class="content container-fluid">
+    <!-- <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">Configurações de Frete Geral</h3>
+        </div>
+        <div class="box-body">
+            <div class="form-group">
+                <strong>Atenção:</strong> O desconto de frete é calculado a partir do valor da comissão definido em cada winehouse.
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <h4>Tipo de Desconto:</h4>
+                    <label><input type="radio" name="shipment_discount_type" value="value"
+                            ng-model="DadosFreteGeral.type" />
+                        valor fixo</label>
+                    <label><input type="radio" name="shipment_discount_type" value="percentage"
+                            ng-model="DadosFreteGeral.type" />
+                        porcentagem</label>
+                </div>
+                <div class="col-sm-3">
+                    <h4>Valor do Desconto:</h4>
+                    <div class="input-group">
+                        <input type="text" min="0" step="0.1" class="form-control" ng-model="DadosFreteGeral.value" />
+                        <span class="input-group-addon" ng-show="DadosFreteGeral.type=='percentage'">
+                            %
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <button class="btn btn-primary btn-spaced" ng-click="SalvarFreteGeral()">Salvar Frete Geral</button>
+        </div>
+        <div class="overlay" ng-if="geralLoad">
+            <i class="fa fa-sync fa-spin"></i>
+        </div>
+    </div> -->
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">Configurações Por Winehouse</h3>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-sm-7">
+                    <div class="form-group">
+                        <strong>Atenção:</strong> O valor definido na tabela abaixo irá sobrepor o desconto de frete
+                        geral. Quando não houver desconto específico, defina o valor para zero.
+                    </div>
+                    <table class="table table-hover table-striped table-bordered">
+                        <thead>
+                            <tr class="uppercase">
+                                <th>Winehouse</th>
+                                <th>Tipo de Desconto</th>
+                                <th>Valor do Desconto</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="winehouse in ListaWinehouses | orderBy:'name'">
+                                <td>{{winehouse.name}}</td>
+                                <td>
+                                    <select class="form-control" ng-model="winehouse.shipment_discount_type">
+                                        <option value="value">Valor Fixo</option>
+                                        <option value="percentage">Porcentagem</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <input type="text" min="0" step="0.1" class="form-control"
+                                            ng-model="winehouse.shipment_discount" />
+                                        <span class="input-group-addon"
+                                            ng-show="winehouse.shipment_discount_type=='percentage'">
+                                            %
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <button class="btn btn-primary btn-spaced" ng-click="SalvarFreteWinehouses()">Salvar Frete das
+                Winehouses</button>
+        </div>
+        <div class="overlay" ng-if="winehousesLoad">
+            <i class="fa fa-sync fa-spin"></i>
+        </div>
+    </div>
+</section>

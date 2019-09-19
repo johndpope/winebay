@@ -1,0 +1,240 @@
+<div class="row banner-winehouse">
+    <div class="winehouse-welcome">
+        <span class="top">
+            <i class="fas fa-map-marker-alt"></i> Bem vindo, você está na:</span>
+        <span class="bottom">
+            winehouse
+            <br /> {{WinehouseData.city + ' - ' + WinehouseData.region}}
+        </span>
+    </div>
+</div>
+<div class="row winehouse-featured">
+    <div class="top">
+        <div class="container">
+            <div class="col-sm-5 product-image text-center">
+                <img src="{{APIBaseUrl + ProductFeatured.image}}" class="img-responsive"
+                    style="max-height:620px; display:inline-block;" />
+            </div>
+            <div class="col-sm-7">
+                <h3>{{ProductFeatured.name}}</h3>
+                <div class="product-info">
+                    <span class="product-type">
+                        {{ProductFeatured.tipicity.name}} | {{ProductFeatured.size}} | {{ProductFeatured.year}} |
+                        <img src="{{APIBaseUrl + ProductFeatured.country.icon}}" class="country-icon" />
+                        {{ProductFeatured.country.name}}
+                    </span>
+                    <span class="product-like {{ProductFeatured.liked?'liked':''}} pull-right"
+                        ng-click="ProductFeatured.liked=!ProductFeatured.liked">
+                        <i class="fas fa-heart"></i>
+                    </span>
+                </div>
+                <hr />
+                <div class="col-sm-6 product-description">
+
+                </div>
+                <div class="col-sm-6">
+                    <table class="table table-condensed">
+                        <tr ng-if="ProductFeatured.productor">
+                            <th>Produtor</th>
+                            <td>{{ProductFeatured.productor.name}}</td>
+                        </tr>
+                        <tr ng-if="ProductFeatured.region">
+                            <th>Região</th>
+                            <td>{{ProductFeatured.region.name}}</td>
+                        </tr>
+                        <tr ng-if="ProductFeatured.grape">
+                            <th>Uva</th>
+                            <td>{{ProductFeatured.grape.name}}</td>
+                        </tr>
+                        <tr ng-if="ProductFeatured.tipicity">
+                            <th>Classificação</th>
+                            <td>{{ProductFeatured.tipicity.name}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="container">
+            <div class="col-sm-7 col-sm-offset-5">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="product-price">
+                            <small>R$</small>
+                            {{(ProductFeatured.price*ProductFeatured.quant).toFixed(2).replace('.', ',')}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="prod-line">
+                            <div class="form-group pull-left" ng-if="!ProductFeatured.onBox">
+                                <label ng-if="!ProductFeatured.onBox">Quantidade:</label>
+                                <div class="input-group product-buy" ng-if="!ProductFeatured.onBox">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-sum" ng-click="ProductBoxDec(ProductFeatured)" ng-disabled="ProductFeatured.quant<=1">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                    </div>
+                                    <input type="text" class="form-control" disabled ng-model="ProductFeatured.quant">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-sum" ng-click="ProductBoxInc(ProductFeatured)" ng-disabled="ProductFeatured.quant>=ProductFeatured.max_count">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button ng-if="!ProductFeatured.onBox"
+                                class="product-button btn btn-primary top-space-md pull-right btn-bolder btn-square"
+                                ng-click="AddToBox(ProductFeatured)">adicionar na box</button>
+                        </div>
+                        <div class="prod-line">
+                            <div class="product-payment" ng-if="!ProductFeatured.onBox">
+                                Até 3x {{((ProductFeatured.price*ProductFeatured.quant)/3).toFixed(2).replace('.',
+                                ',')}} sem juros no cartão
+                            </div>
+                            <div class="product-added" ng-if="ProductFeatured.onBox">
+                                Adicionado à box.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4" ng-show="!ProductFeatured.onBox">
+                        <div class="prod-line">
+                            <label>Consulte o prazo de entrega:</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control input-white" ng-model="CepPrazoEntrega"
+                                    mask="99999-999" mask-restrict="reject" mask-limit="true" ng-disabled="freteLoad"/>
+                                <div class="input-group-btn">
+                                    <button class="btn btn-primary" ng-disabled="freteLoad"
+                                        ng-click="CalculaPrazoEntrega()">OK</button>
+                                </div>
+                            </div>
+                            <span ng-if="freteLoad"><i class="fa fa-spin fa-spinner"></i></span>
+                            <div ng-if="!freteError&&DadosFrete">
+                                <small>
+                                    <div>
+                                        <strong>R$ {{DadosFrete.QtdShp.ShippingCharge.toBRCurrency()}}</strong>
+                                        -
+                                        <strong>Entrega Expressa</strong>
+                                    </div>
+                                    <div>
+                                        Entrega em {{DadosFrete.QtdShp.TotalTransitDays}} dia(s).
+                                    </div>
+                                </small>
+                            </div>
+                            <small ng-if="freteError">Não foi possível calcular o frete. Tente novamente.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container winehouse-main">
+    <div class="row">
+        <ng-include class="col-sm-2" src="'/templates/home-filter.html'"></ng-include>
+        <div class="col-sm-10">
+            <div class="home-group home-filtered">
+                <div class="group-header">
+                    <h3>
+                        <span class="bolder">Confira outros produtos da
+                            <br /> Winehouse {{WinehouseData.name}}</span>
+                        <div class="header-buttons">
+                            <span class="right-space">
+                                <label>Ordenar por</label>
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-default {{FilterOrder=='price'?'active':''}}"
+                                        ng-click="FilterOrder='price'">
+                                        <i class="fas fa-dollar-sign"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-default {{FilterOrder=='name'?'active':''}}"
+                                        ng-click="FilterOrder='name'">A-Z</button>
+                                </div>
+                            </span>
+                            <label>Visualização</label>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default {{FilterView=='grid'?'active':''}}"
+                                    ng-click="FilterView='grid'">
+                                    <i class="fas fa-th"></i>
+                                </button>
+                                <button type="button" class="btn btn-default {{FilterView=='list'?'active':''}}"
+                                    ng-click="FilterView='list'">
+                                    <i class="fas fa-list"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </h3>
+                    <span class="rainbow-line"></span>
+                </div>
+                <div class="group-products product-slider">
+                    <div class="slide-item {{FilterView=='grid'?'col-md-3 col-sm-4 col-xs-12':'col-sm-12 is-list'}}"
+                        dir-paginate="product in FiltraProdutosWinehouse() | itemsPerPage: 20 | orderBy:FilterOrder"
+                        pagination-id="winehouseFilteredProducts">
+                        <div class="slide-product">
+                            <a href="#!/winehouse/{{product.winehouse_id}}/produto/{{product.id}}">
+                                <div class="product-winehouse" ng-if="FilterView=='grid'">
+                                    <img src="/assets/img/winehouse.png" class="winehouse-icon" />
+                                    {{product.winehouse.name}}
+                                </div>
+                                <div class="product-image {{FilterView=='grid'?'':'text-center col-sm-3'}}">
+                                    <img src="{{APIBaseUrl + product.image}}" />
+                                    <span class="product-like {{product.liked?'liked':''}}"
+                                        ng-click="product.liked=!product.liked">
+                                        <i class="fas fa-heart"></i>
+                                    </span>
+                                    <span class="product-country">
+                                        <img src="{{APIBaseUrl + product.country.icon}}" class="country-icon" />
+                                        {{product.country.shortname}}
+                                    </span>
+                                </div>
+                                <div class="product-info {{FilterView=='grid'?'':'col-sm-6'}}">
+                                    <div class="product-winehouse" ng-if="FilterView=='grid'">
+                                        <img src="/assets/img/winehouse.png" class="winehouse-icon" />
+                                        {{product.winehouse.name}}
+                                    </div>
+                                    <div class="product-name">{{product.name}}</div>
+                                    <div class="product-type">{{product.tipicity.name}} | {{product.size}}</div>
+                                    <div class="product-type" ng-if="FilterView=='list'">
+                                        <img src="/assets/img/winehouse.png" class="winehouse-icon" />
+                                        {{product.winehouse.name}}
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="product-actions {{FilterView=='grid'?'':'col-sm-3'}}">
+                                <span class="product-price" ng-if="!product.onBox">
+                                    <small>R$</small>{{product.price.toFixed(2).replace('.', ',')}}</span>
+                                <div class="input-group product-buy input-group-sm" ng-if="!product.onBox">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-sum" ng-click="ProductBoxDec(product)" ng-disabled="product.quant<=1">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                    </div>
+                                    <input type="text" class="form-control" disabled ng-model="product.quant">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-sum" ng-click="ProductBoxInc(product)" ng-disabled="product.quant>=product.max_count">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <button ng-if="!product.onBox"
+                                    class="product-button btn btn-success btn-bolder btn-block btn-square"
+                                    ng-click="AddToBox(product)">adicionar a box</button>
+                                <div class="product-added" ng-if="product.onBox">
+                                    Adicionado à box.
+                                    <i class="fas fa-check"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <dir-pagination-controls pagination-id="winehouseFilteredProducts"></dir-pagination-controls>
+                    </div>
+                </div>
+                <div class="group-pagination">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+<section class="content-header">
+    <h1>Kits</h1>
+    <ol class="breadcrumb">
+        <li class="active">
+            <i class="fa fa-box"></i> Kits</li>
+    </ol>
+</section>
+<section class="content container-fluid">
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">
+                Kits da Winehouse
+            </h3>
+            <a class="btn btn-primary pull-right" href="#!/kits/novo">Novo Kit</a>
+        </div>
+        <div class="box-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Valor</th>
+                            <th>Embalagem</th>
+                            <th>Produtos</th>
+                            <th>Quantidade Total</th>
+                            <th>Layout</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr dir-paginate="kit in ListaKits | itemsPerPage:15" pagination-id="pagKits">
+                            <td>{{kit.name}}</td>
+                            <td>{{'R$'+kit.price}}</td>
+                            <td>{{kit.package_name}} <small>({{kit.package_size}})</small></td>
+                            <td>{{kit.products}}</td>
+                            <td>{{kit.product_count || '0'}}</td>
+                            <td>Padrão</td>
+                            <td class="text-center">
+                                <a href="#!/kits/ver/{{kit.id}}" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i></a>
+                                <button class="btn btn-xs btn-danger" ng-click="ExcluiKit(kit)">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <dir-pagination-controls pagination-id="pagKits" class="pull-right"></dir-pagination-controls>
+        </div>
+        <div class="overlay" ng-if="load">
+            <i class="fa fa-sync fa-spin"></i>
+        </div>
+    </div>
+</section>

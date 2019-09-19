@@ -1,0 +1,252 @@
+<div class="container content-padding">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-title">
+                <h2>Finalizar Compra</h2>
+                <span>Você tem <strong>{{ContagemBox()}} produtos</strong> na caixa</span>
+            </div>
+        </div>
+    </div>
+    <div class="row top-space-lg">
+        <div class="col-sm-4">
+            <div class="payment-col has-border">
+                <h3>Endereço de Entrega</h3>
+                <div class="col-sm-12" ng-if="!DadosUsuario.addresses.length">
+                    <h5>Nenhum endereço cadastrado.</h5>
+                    <a href="#!/cliente/dados" class="btn btn-primary btn-sm">Meus Dados</a>
+                </div>
+                <div class="payment-address {{NovaCompra.address==address?'active':''}}"
+                    ng-repeat="address in DadosUsuario.addresses" ng-click="SetAddress(address)">
+                    <div class="address-name">{{address.name}}</div>
+                    <div class="address-info">{{address.address}}</div>
+                    <div class="address-info">
+                        CEP: {{address.cep}} - Bairro: {{address.region}}<br />
+                        {{address.city}} - {{address.state}}<br />
+                        {{address.information}}
+                    </div>
+                    <hr />
+                    <div class="address-info">
+                        <strong>Destinatário:</strong> {{address.dest}}
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <!-- <a href="#!/cliente/endereco" class="btn btn-xs btn-primary">Adicionar Endereço</a> -->
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <div class="payment-col">
+                <h3>Pagamento</h3>
+                <div class="form form-lg">
+                    <div class="form-group">
+                        <label>Forma de Pagamento</label>
+                        <label class="radio-label"><input type="radio" ng-model="NovaCompra.payment_mode"
+                                value="credit_card" name="payment_method" /> Cartão de Crédito</label>
+                        <label class="radio-label"><input type="radio" ng-model="NovaCompra.payment_mode" value="boleto"
+                                name="payment_method" />
+                            Boleto</label>
+                    </div>
+                    <span ng-if="NovaCompra.payment_mode=='credit_card'">
+                        <div class="form-group">
+                            <label>Número do Cartão</label>
+                            <input type="text" class="form-control input-lg" ng-disabled="orderLoad"
+                                ng-model="NovaCompra.card_payment.number" mask="9999-9999-9999-9999"
+                                mask-restrict="reject" mask-limit="true" />
+                        </div>
+                        <div class="form-group">
+                            <label>Nome do Titular</label>
+                            <input type="text" class="form-control input-lg" ng-disabled="orderLoad"
+                                ng-model="NovaCompra.card_payment.holder_name" />
+                        </div>
+                        <div class="form-group">
+                            <label>CPF</label>
+                            <input type="text" class="form-control input-lg" ng-disabled="orderLoad"
+                                ng-model="NovaCompra.card_payment.holder_document" mask="999.999.999-99"
+                                mask-restrict="reject" mask-limit="true" />
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Data de Validade:</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control input-lg" ng-disabled="orderLoad"
+                                            ng-model="NovaCompra.card_payment.expiration" mask="99/99"
+                                            mask-restrict="reject" mask-limit="true" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Cód. Segurança</label>
+                                    <input type="text" class="form-control input-lg" ng-disabled="orderLoad"
+                                        ng-model="NovaCompra.card_payment.security_code" mask="999"
+                                        mask-restrict="reject" mask-limit="true" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Parcelas:</label>
+                            <select class="form-control input-lg" ng-disabled="orderLoad"
+                                ng-model="NovaCompra.card_payment.installments">
+                                <option value="1">1 parcela de {{CalculaPedidoTotal().toFixed(2).replace('.', ',')}} (sem
+                                    juros)</option>
+                                <option value="2">2 parcelas de {{(CalculaPedidoTotal()/2).toFixed(2).replace('.', ',')}}
+                                    (sem juros)</option>
+                                <option value="3">3 parcelas de {{(CalculaPedidoTotal()/3).toFixed(2).replace('.', ',')}}
+                                    (sem juros)</option>
+                                <option value="4">4 parcelas de {{(CalculaPedidoTotal()/4).toFixed(2).replace('.', ',')}}
+                                    (sem juros)</option>
+                                <option value="5">5 parcelas de {{(CalculaPedidoTotal()/5).toFixed(2).replace('.', ',')}}
+                                    (sem juros)</option>
+                                <option value="6">6 parcelas de {{(CalculaPedidoTotal()/6).toFixed(2).replace('.', ',')}}
+                                    (sem juros)</option>
+                                <option value="7">7 parcelas de {{(CalculaPedidoTotal()/7).toFixed(2).replace('.', ',')}}
+                                    (sem juros)</option>
+                                <option value="8">8 parcelas de {{(CalculaPedidoTotal()/8).toFixed(2).replace('.', ',')}}
+                                    (sem juros)</option>
+                                <option value="9">9 parcelas de {{(CalculaPedidoTotal()/9).toFixed(2).replace('.', ',')}}
+                                    (sem juros)</option>
+                                <option value="10">10 parcelas de {{(CalculaPedidoTotal()/10).toFixed(2).replace('.',
+                                    ',')}} (sem juros)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-success btn-square" ng-click="FinalizarPedido()"
+                                ng-disabled="orderLoad||freteLoad">Concluir
+                                Compra</button>
+                            <a href="/" class="btn btn-primary pull-right btn-square" ng-disabled="orderLoad">Continuar
+                                Comprando</a>
+                        </div>
+                    </span>
+                    <span ng-if="NovaCompra.payment_mode=='boleto'">
+                        <p>O boleto será gerado na tela seguinte, após a efetivação da compra. Por favor, verifique seus
+                            dados antes de finalizar.</p>
+                        <hr />
+                        <div class="top-space-lg text-center">
+                            <button class="btn btn-success btn-lg" ng-click="FinalizarPedido()"
+                                ng-disabled="orderLoad||freteLoad">Finalizar
+                                Compra</button>
+                        </div>
+                    </span>
+                    <div class="top-space-lg" ng-if="orderLoad">
+                        <h4>Por favor aguarde, seu pagamento está sendo processado...</h4>
+                        <i class="fa fa-spin fa-sync fa-3x"></i>
+                    </div>
+                    <div class="" ng-if="CaixasTotal.length > 1">
+                        <small><strong>Atenção:</strong> Será gerado um pedido independente para cada Winehouse
+                            pertencente a esta operação.</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="payment-col payment-box" ng-if="!CaixasTotal.length">
+                <h4>Nenhum produto na caixa.</h4>
+            </div>
+            <div class="payment-col payment-box" ng-repeat="box in CaixasTotal">
+                <h3>Caixa - {{box.name}}</h3>
+                <div class="payment-box-item" ng-repeat="product in box.products track by $index">
+                    <div class="item-name">{{product.name}}</div>
+                    <div class="item-info">
+                        <div class="input-group product-buy input-group-sm">
+                            <div class="input-group-btn">
+                                <button class="btn btn-sum" ng-click="ProductBoxDecrease(product)"
+                                    ng-disabled="orderLoad"><i class="fas fa-minus"></i></button>
+                            </div>
+                            <input type="text" class="form-control" ng-model="product.quant" disabled>
+                            <div class="input-group-btn">
+                                <button class="btn btn-sum" ng-click="ProductBoxIncrease(product)"
+                                    ng-disabled="orderLoad||(product.quant>=product.max_count)"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+                        <div class="item-price">
+                            R$ {{product.price.toFixed(2).replace(".", ",")}} cada
+                        </div>
+                        <div class="item-total">
+                            <span>R$</span>
+                            {{(product.price*product.quant).toFixed(2).replace(".", ",")}}
+                        </div>
+                    </div>
+                </div>
+                <div class="box-shipment">
+                    <strong>Tipo de Entrega:</strong>
+                    <div>
+                        <small>
+                            <label>
+                                <input type="radio" name="box_{{$index}}_shipment" ng-model="box.shipment"
+                                    value="expresso" ng-disabled="orderLoad" /> Expresso
+                            </label>
+                            <label>
+                                <input type="radio" name="box_{{$index}}_shipment" ng-model="box.shipment"
+                                    value="retirar" ng-disabled="orderLoad" /> Retirar na Winehouse
+                            </label>
+                        </small>
+                    </div>
+                </div>
+                <h4 class="text-primary text-right">Total: R$ {{box.total.toFixed(2).replace('.', ',')}}</h4>
+            </div>
+            <div class="payment-col payment-shipment">
+                <div class="shipment-info" ng-if="SelectedAddress!=''">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="shipment-label">
+                                Frete:
+                                <span ng-if="freteLoad>0"><i class="fa fa-spin fa-spinner"></i></span>
+                            </div>
+                            <div class="shipment-total">
+                                <span>R$</span>
+                                {{freteLoad==0?CalculaValorFrete().toBRCurrency():''}}
+                                <span ng-if="freteLoad>0">---</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group" ng-repeat="box in CaixasTotal">
+                                <strong>{{box.name}}: </strong> R$
+                                <span ng-if="freteLoad==0">
+                                    {{(box.total_frete+box.desconto_frete).toBRCurrency()}}
+                                    <small ng-show="box.desconto_frete>0">-<strong>R$ {{box.desconto_frete.toBRCurrency()}}</strong></small>
+                                </span>
+                                <span ng-if="freteLoad>0">---</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr ng-if="SelectedAddress!=''" />
+                <div class="shipment-coupon">
+                    <label>Cupom de desconto: <span ng-if="couponLoad"><i
+                                class="fa fa-spin fa-spinner"></i></span></label>
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control"
+                            ng-disabled="CalculaPedidoTotal()==0||orderLoad||couponLoad" ng-model="CupomDesconto" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" ng-disabled="CalculaPedidoTotal()==0||orderLoad||couponLoad"
+                                ng-click="ValidarCupom()">OK</button>
+                        </span>
+                    </div>
+                    <div class="form-group" ng-if="InformacoesCupom=='invalid'">
+                        O cupom é inválido.
+                    </div>
+                </div>
+            </div>
+            <div class="payment-col payment-total">
+                <div class="total-info" ng-if="InformacoesCupom&&InformacoesCupom!='invalid'">
+                    <div class="total-label">Desconto Cupom</div>
+                    <div class="total-info">{{InformacoesCupom.code}}</div>
+                    <div class="total-value">
+                        <span>R$</span>
+                        {{InformacoesCupom.value.toBRCurrency()}}
+                    </div>
+                </div>
+                <div class="total-info">
+                    <div class="total-label">Total do Pedido</div>
+                    <div class="total-value">
+                        <span>R$</span>
+                        {{CalculaPedidoTotal().toBRCurrency()}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

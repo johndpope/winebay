@@ -1,0 +1,187 @@
+<div class="row banner-container">
+    <div uib-carousel interval="5000" active="0" no-transition="0" class="slide">
+        <div uib-slide ng-repeat="banner in DadosSite.home_banners" index="$index">
+            <a href="{{banner.url}}">
+                <img ng-src="{{APIBaseUrl + banner.image}}" class="img-responsive">
+            </a>
+        </div>
+    </div>
+</div>
+<section class="winehouse-register row">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8">
+                <h3>Quer ter os seus produtos aparecendo na {{ProjectName}}?</h3>
+            </div>
+            <div class="col-sm-4">
+                <a href="{{WinehouseRegisterUrl}}" target="_blank" class="btn btn-xlg btn-success btn-block">Cadastre-se!</a>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="row">
+    <span class="rainbow-line"></span>
+</div>
+<div class="container top-space-xlg">
+    <ng-include class="col-sm-2" src="'/templates/home-filter.html'"></ng-include>
+    <div class="col-sm-10">
+        <div class="featured-product">
+            <a href="{{DadosSite.featured_banner.url}}"><img ng-src="{{APIBaseUrl + DadosSite.featured_banner.image}}"
+                    class="img-responsive" /></a>
+        </div>
+        <div ng-if="!HasFilter">
+            <div class="home-group home-featured-slider home-slider" ng-show="DestaqueCount()">
+                <div class="slider-header">
+                    <h3>
+                        Destaques
+                        <div class="slider-dots" rel="dots"></div>
+                    </h3>
+                    <span class="rainbow-line"></span>
+                </div>
+                <div class="slider-content">
+                    <div class="slider-arrow" rel="prev-arrow">
+                        <i class="fas fa-chevron-left"></i>
+                    </div>
+                    <slick responsive="featuredSliderResponsiveSettings" infinite="true" autoplay="true"
+                        autoplay-speed="4000" speed="600" dots="true" append-dots=".home-featured-slider [rel='dots']"
+                        slides-to-show="2" slides-to-scroll="1" prev-arrow=".home-featured-slider [rel='prev-arrow']"
+                        next-arrow=".home-featured-slider [rel='next-arrow']">
+                        <div class="slide-item" ng-repeat="product in ProductList | filter:{featured:true}">
+                            <a href="{{product.url}}" title="{{product.name}}" alt="{{product.name}}"><img
+                                    src="{{product.featuredimage}}" class="img-responsive" /></a>
+                        </div>
+                    </slick>
+                    <div class="slider-arrow" rel="next-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="home-group home-slider product-slider home-{{group.filter}}-slider"
+                ng-repeat="group in homeSliderGroups">
+                <div class="slider-header">
+                    <h3>
+                        {{group.title}}
+                        <div class="slider-dots" rel="dots"></div>
+                    </h3>
+                    <span class="rainbow-line"></span>
+                </div>
+                <div class="slider-content">
+                    <div class="slider-arrow" rel="prev-arrow">
+                        <i class="fas fa-chevron-left"></i>
+                    </div>
+                    <slick ng-if="ProductList.length" responsive="homeSliderResponsiveSettings" infinite="true"
+                        autoplay="true" autoplay-speed="8000" speed="700" dots="false"
+                        append-dots=".home-{{group.filter}}-slider [rel='dots']" slides-to-show="4" slides-to-scroll="1"
+                        prev-arrow=".home-{{group.filter}}-slider [rel='prev-arrow']"
+                        next-arrow=".home-{{group.filter}}-slider [rel='next-arrow']">
+                        <div class="slide-item" ng-repeat="product in ProductList | filter:{bestchoice:true}">
+                            <a href="#!/winehouse/{{product.winehouse_id}}/produto/{{product.id}}">
+                                <div class="slide-product">
+                                    <div class="product-winehouse">
+                                        <img src="/assets/img/winehouse.png" class="winehouse-icon" />
+                                        {{product.winehouse.name}}
+                                    </div>
+                                    <div class="product-image">
+                                        <img src="{{APIBaseUrl + product.image}}" />
+                                        <span class="product-like {{product.liked?'liked':''}}"
+                                            ng-click="product.liked=!product.liked"><i class="fas fa-heart"></i></span>
+                                        <span class="product-country">
+                                            <img src="{{APIBaseUrl + product.country.icon}}" class="country-icon" />
+                                            {{product.country.shortname}}
+                                        </span>
+                                    </div>
+                                    <div class="product-info">
+                                        <div class="product-name">{{product.name}}</div>
+                                        <div class="product-type">{{product.tipicity.name}} | {{product.size}}</div>
+                                    </div>
+                                    <div class="product-actions">
+                                        <span class="product-price"><small>R$</small>{{product.price.toFixed(2).replace('.',
+                                                    ',')}}</span>
+                                        <button
+                                            class="product-button btn btn-success btn-bolder pull-right btn-square">Ver</button>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </slick>
+                    <div class="slider-arrow" rel="next-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="home-group home-filtered" ng-if="HasFilter">
+            <div class="group-header">
+                <h3>
+                    <strong>{{FiltraProdutosHome().length}}</strong> produtos encontrados
+                    <div class="header-buttons">
+                        <span class="right-space">
+                            <label>Ordenar por</label>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default {{FilterOrder=='price'?'active':''}}"
+                                    ng-click="FilterOrder='price'"><i class="fas fa-dollar-sign"></i></button>
+                                <button type="button" class="btn btn-default {{FilterOrder=='name'?'active':''}}"
+                                    ng-click="FilterOrder='name'">A-Z</button>
+                            </div>
+                        </span>
+                        <label>Visualização</label>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-default {{FilterView=='grid'?'active':''}}"
+                                ng-click="FilterView='grid'"><i class="fas fa-th"></i></button>
+                            <button type="button" class="btn btn-default {{FilterView=='list'?'active':''}}"
+                                ng-click="FilterView='list'"><i class="fas fa-list"></i></button>
+                        </div>
+                    </div>
+                </h3>
+                <span class="rainbow-line"></span>
+            </div>
+            <div class="group-tags">
+                <button class="btn btn-clear-filter btn-sm" ng-click="LimpaFiltros()">Limpar todos os filtros</button>
+            </div>
+            <div class="group-products product-slider slider-filtered">
+                <div class="slide-item {{FilterView=='grid'?'col-md-3 col-sm-4 col-xs-12':'col-sm-12 is-list'}}"
+                    dir-paginate="product in FiltraProdutosHome() | itemsPerPage: 20 | orderBy:FilterOrder"
+                    pagination-id="homeFilteredProducts">
+                    <a href="#!/winehouse/{{product.winehouse_id}}/produto/{{product.id}}">
+                        <div class="slide-product">
+                            <div class="product-winehouse" ng-if="FilterView=='grid'">
+                                <img src="/assets/img/winehouse.png" class="winehouse-icon" />
+                                {{product.winehouse.name}}
+                            </div>
+                            <div class="product-image {{FilterView=='grid'?'':'text-center col-sm-3'}}">
+                                <img src="{{APIBaseUrl + product.image}}" />
+                                <span class="product-like {{product.liked?'liked':''}}"
+                                    ng-click="product.liked=!product.liked"><i class="fas fa-heart"></i></span>
+                                <span class="product-country">
+                                    <img src="{{APIBaseUrl + product.country.icon}}" class="country-icon" />
+                                    {{product.country.shortname}}
+                                </span>
+                            </div>
+                            <div class="product-info {{FilterView=='grid'?'':'col-sm-6'}}">
+                                <div class="product-winehouse" ng-if="FilterView=='grid'">
+                                    <img src="/assets/img/winehouse.png" class="winehouse-icon" />
+                                    {{product.winehouse.name}}
+                                </div>
+                                <div class="product-name">{{product.name}}</div>
+                                <div class="product-type">{{product.tipicity.name}} | {{product.size}}</div>
+                                <div class="product-type top-space-md" ng-if="FilterView=='list'">
+                                    <img src="/assets/img/winehouse.png" class="winehouse-icon" />
+                                    {{product.winehouse.name}}
+                                </div>
+                            </div>
+                            <div class="product-actions {{FilterView=='grid'?'':'col-sm-3'}}">
+                                <span
+                                    class="product-price"><small>R$</small>{{product.price.toFixed(2).replace('.', ',')}}</span>
+                                <a href="{{product.url}}"
+                                    class="product-button btn btn-success btn-bolder pull-right btn-square">Ver</a>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="group-pagination col-sm-12 top-space">
+                <dir-pagination-controls pagination-id="homeFilteredProducts"></dir-pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>

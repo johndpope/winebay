@@ -1,0 +1,95 @@
+<div ng-controller="CadastroModalCtrl" class="modal-cadastro">
+    <script type="text/ng-template" id="cadastro-modal.html">
+        <div class="register-box">
+            <div class="login-logo">
+                <div><b>Wine</b>BAY</div>
+                <div><small>Cadastro</small></div>
+            </div>
+            <div class="register-box-body">
+                <p class="register-box-msg">Cadastre sua Winehouse e faça parte da WineBay</p>
+                <form ng-submit="DoRegister()">
+                    <div class="form-group">
+                        <label>Nome Fantasia</label>
+                        <input class="form-control" placeholder="Digite o nome fantasia" type="text"
+                            ng-model="NovoWinehouse.name" ng-disabled="uploadFlag" />
+                    </div>
+                    <div class="form-group">
+                        <label>Razão Social</label>
+                        <input class="form-control" placeholder="Digite a razão social" type="text"
+                            ng-model="NovoWinehouse.business_name" ng-disabled="uploadFlag" />
+                    </div>
+                    <div class="form-group">
+                        <label>CNPJ</label>
+                        <input class="form-control" placeholder="Digite o cnpj" type="text"
+                            ng-model="NovoWinehouse.cnpj" ng-disabled="uploadFlag" 
+                            mask="99.999.999/9999-99" mask-restrict="reject" mask-limit="true"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Regime Tributário:</label>
+                        <select class="form-control" ng-model="NovoWinehouse.tax_type" ng-disabled="uploadFlag">
+                            <option value="">Selecione</option>
+                            <option value="lucro_real">Lucro Real</option>
+                            <option value="lucro_presumido">Lucro Presumido</option>
+                            <option value="simples_nacional">Simples Nacional</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Responsável</label>
+                        <input class="form-control" placeholder="Digite o nome do responsável" type="text"
+                            ng-model="NovoWinehouse.contact" ng-disabled="uploadFlag" />
+                    </div>
+                    <div class="form-group">
+                        <label>Endereço</label>
+                        <input class="form-control" placeholder="Digite o endereço" type="text"
+                            ng-model="NovoWinehouse.address" ng-disabled="uploadFlag" />
+                    </div>
+                    <div class="form-group">
+                        <label>Bairro</label>
+                        <input class="form-control" placeholder="Digite o bairro" type="text"
+                            ng-model="NovoWinehouse.region" ng-disabled="uploadFlag" />
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-8">
+                            <label>Cidade</label>
+                            <input class="form-control" placeholder="Digite a cidade" type="text"
+                                ng-model="NovoWinehouse.city" ng-disabled="uploadFlag" />
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label>UF</label>
+                            <input class="form-control" placeholder="Digite a UF" type="text"
+                                ng-model="NovoWinehouse.state" mask="@@" mask-restrict="reject" mask-limit="true"
+                                ng-disabled="uploadFlag" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <label>CEP</label>
+                            <input class="form-control" placeholder="Digite o cep" type="text" ng-model="NovoWinehouse.cep"
+                                mask="99999-999" mask-restrict="reject" mask-limit="true" ng-disabled="uploadFlag" />
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label>Telefone</label>
+                            <input class="form-control" placeholder="Digite o telefone" type="text"
+                                ng-model="NovoWinehouse.phone" mask="99 99999?-9999" mask-restrict="reject"
+                                mask-limit="true" ng-disabled="uploadFlag" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input class="form-control" placeholder="Digite o email" type="text"
+                            ng-model="NovoWinehouse.email" ng-disabled="uploadFlag" />
+                    </div>
+                    <div class="form-group top-space text-center">
+                        <button type="submit" class="btn btn-primary btn-lg" ng-disabled="load">Cadastrar</button>
+                        <span ng-show="load"><i class="fa fa-spin fa-sync"></i></span>
+                    </div>
+                </form>
+                <hr/>
+                <div class="top-space-lg text-center top-space-lg">
+                    <h4><strong>Já se cadastrou?</strong></h4>
+                    <a href="#!/login" class="btn btn-primary btn-lg">Vá para o Login</a>
+                </div>
+            </div>
+        </div>
+    </script>
+</div>

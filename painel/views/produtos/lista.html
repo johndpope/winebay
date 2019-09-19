@@ -1,0 +1,67 @@
+<section class="content-header">
+    <h1>Produtos</h1>
+    <ol class="breadcrumb">
+        <li><i class="fa fa-sitemap"></i> Estrutura</li>
+        <li class="active">Produtos</li>
+    </ol>
+</section>
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">
+                        Lista de Produtos
+                    </h3>
+                    <a class="btn btn-sm btn-primary pull-right" href="#!/produtos/criar"><i class="fa fa-plus"></i>
+                        criar produto</a>
+                </div>
+                <div class="box-body">
+                    <label class="pull-right">
+                        <input type="checkbox" ng-model="Filtro.no_image"> exibir produtos sem imagem
+                    </label>
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>País</th>
+                                <th>Região</th>
+                                <th>Uva</th>
+                                <th>Produtor</th>
+                                <th>Tipicidade</th>
+                                <th>Ações</th>
+                            </tr>
+                            <tr>
+                                <th><input type="text" ng-model="Filtro.name" class="form-control" /></th>
+                                <th><input type="text" ng-model="Filtro.country" class="form-control" /></th>
+                                <th><input type="text" ng-model="Filtro.region" class="form-control" /></th>
+                                <th><input type="text" ng-model="Filtro.grape" class="form-control" /></th>
+                                <th><input type="text" ng-model="Filtro.productor" class="form-control" /></th>
+                                <th><input type="text" ng-model="Filtro.tipicity" class="form-control" /></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dir-paginate="produto in ListaProdutos | filter:Filtro | itemsPerPage:15" pagination-id="pagProdutos">
+                                <td>{{produto.name}}</td>
+                                <td>{{produto.country}}</td>
+                                <td>{{produto.region}}</td>
+                                <td>{{produto.grape}}</td>
+                                <td>{{produto.productor}}</td>
+                                <td>{{produto.tipicity}}</td>
+                                <td class="text-center">
+                                    <a class="btn btn-xs btn-warning" href="#!/produtos/alterar/{{produto.id}}"><i
+                                            class="fa fa-edit"></i></a>
+                                    <a class="btn btn-xs btn-danger" ng-click="ExcluiProduto(produto)"><i class="fa fa-trash"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <dir-pagination-controls pagination-id="pagProdutos" class="pull-right"></dir-pagination-controls>
+                </div>
+                <div class="overlay" ng-if="produtosLoad">
+                    <i class="fa fa-sync fa-spin"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

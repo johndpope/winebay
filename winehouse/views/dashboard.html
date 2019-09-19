@@ -1,0 +1,44 @@
+<section class="content-header">
+    <h1>
+        Dashboard
+        <small>Resumo dos últimos 30 dias</small>
+    </h1>
+    <ol class="breadcrumb">
+        <!-- <li class="active"><i class="fa fa-dashboard"></i> Dashboard</li> -->
+    </ol>
+</section>
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Vendas</span>
+                    <span class="info-box-number">0</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-yellow">
+                    <span ng-if="!produtosLoad"><i class="fa fa-boxes"></i></span>
+                    <span ng-if="produtosLoad"><i class="fa fa-sync fa-spin"></i></span>
+                </span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Produtos</span>
+                    <span class="info-box-number">{{ListaProdutos.length}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix visible-sm-block"></div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Versão Atual</span>
+                    <span class="info-box-number">0.0.1<small>alpha</small></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

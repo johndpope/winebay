@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html ng-app="winebay" ng-controller="AppController">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>Winebay</title>
+    <link type="text/css" rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="/assets/vendor/fontawesome/css/fontawesome-all.min.css" />
+    <link type="text/css" rel="stylesheet" href="/assets/vendor/raleway/raleway.css" />
+    <link type="text/css" rel="stylesheet" href="/assets/vendor/slick/slick.css" />
+    <link type="text/css" rel="stylesheet" href="/assets/style/winebay.css" />
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body headershrink id="mainBody">
+    <ng-include src="'/templates/header.html'"></ng-include>
+    <div class="container-fluid" rel="main" ui-view></div>
+    <ng-include src="'/templates/footer.html'"></ng-include>
+
+    <div id="preloadoverlay" class="preload-overlay">
+        <i class="fa fa-sync fa-spin"></i>
+    </div>
+    <script type="text/javascript" src="/assets/vendor/jquery/jquery.min.js"></script>
+
+    <script type="text/javascript" src="/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/assets/vendor/bootstrap/bootbox.min.js"></script>
+
+    <script type="text/javascript" src="/assets/vendor/angularjs/angular.min.js"></script>
+    <script type="text/javascript" src="/assets/vendor/slick/slick.min.js"></script>
+    <script type="text/javascript" src="/assets/vendor/slick/angular-slick.min.js"></script>
+    <script type="text/javascript" src="/assets/vendor/angularjs/angular-sanitize.min.js"></script>
+    <script type="text/javascript" src="/assets/vendor/angularjs/angular-click-outside.js"></script>
+    <script type="text/javascript" src="/assets/vendor/angularjs/angular-animate.min.js"></script>
+    <script type="text/javascript" src="/assets/vendor/angularjs/angular-ui-bootstrap.min.js"></script>
+    <script type="text/javascript" src="/assets/vendor/angularjs/angular-ui-router.min.js"></script>
+    <script type="text/javascript" src="/assets/vendor/ngmask/ngMask.min.js"></script>
+    <script type="text/javascript" src="/assets/vendor/angularjs/dir-paginate.js"></script>
+    <script type="text/javascript" src="/assets/vendor/moment/moment.min.js"></script>
+
+    <script type="text/javascript" src="/assets/scripts/winebay.js"></script>
+    <script type="text/javascript" src="/assets/scripts/services/Utils.js"></script>
+    <script type="text/javascript" src="/assets/scripts/services/User.js"></script>
+    <script type="text/javascript" src="/assets/scripts/services/Products.js"></script>
+    <script type="text/javascript" src="/assets/scripts/services/System.js"></script>
+    <script type="text/javascript" src="/assets/scripts/services/SmoothScroll.js"></script>
+    <script type="text/javascript" src="/assets/scripts/directives/Scroll.js"></script>
+    <script type="text/javascript" src="/assets/scripts/controllers/HeaderController.js"></script>
+    <script type="text/javascript" src="/assets/scripts/controllers/HomeController.js"></script>
+    <script type="text/javascript" src="/assets/scripts/controllers/BuscaGeralController.js"></script>
+    <script type="text/javascript" src="/assets/scripts/controllers/CadastroController.js"></script>
+    <script type="text/javascript" src="/assets/scripts/controllers/LoginController.js"></script>
+    <script type="text/javascript" src="/assets/scripts/controllers/HomeSidebarController.js"></script>
+    <!-- <script type="text/javascript" src="/assets/scripts/controllers/WinehouseSidebarController.js"></script> -->
+    <script type="text/javascript" src="/assets/scripts/controllers/WinehouseController.js"></script>
+    <script type="text/javascript" src="/assets/scripts/controllers/FinalizarCompraController.js"></script>
+    <script type="text/javascript" src="/assets/scripts/controllers/InstitucionalController.js"></script>
+    <script type="text/javascript" src="/assets/scripts/controllers/ContatoController.js"></script>
+    <script type="text/javascript" src="/assets/scripts/controllers/PedidoFinalizadoController.js"></script>
+    <script type="text/javascript" src="/assets/scripts/controllers/PedidosClienteController.js"></script>
+    <script type="text/javascript" src="/assets/scripts/controllers/DadosClienteController.js"></script>
+    <script type="text/javascript" src="/assets/scripts/controllers/FooterController.js"></script>
+
+    <script src="//localhost:35729/livereload.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,17 @@
+<IfModule mod_authn_file.c>
+  # For Apache 2.4 or later
+  AuthType Basic
+  AuthName "Please provide username and password"
+  AuthBasicProvider file
+  AuthUserFile "/home/winebay/www/htaccess.passwd"
+  Require valid-user
+</IfModule>
+
+<IfModule mod_auth.c>
+  # For Apache 2.2 or lower
+  AuthType Basic
+  AuthName "Please provide username and password"
+  AuthUserFile "/home/winebay/www/htaccess.passwd"
+  Require valid-user
+</IfModule>
+

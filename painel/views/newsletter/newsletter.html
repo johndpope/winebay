@@ -1,0 +1,51 @@
+<section class="content-header">
+    <h1>Newsletter</h1>
+    <ol class="breadcrumb">
+        <li><i class="fas fa-newspaper"></i> Newsletter</li>
+        <li class="active">Geral</li>
+    </ol>
+</section>
+<section class="content container-fluid">
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">
+                Inscritos
+            </h3>
+            <div class="pull-right">
+                <button class="btn btn-primary btn-xs" ng-disabled="load||!ListaNewsletter.length" ng-csv="ListaNewsletter"
+                    csv-header="['Nome', 'E-Mail', 'Inscrição']" csv-column-order="['name', 'email', 'subscription_date_formatted']"
+                    add-bom="true" filename="winebay_newsletter.csv">Exportar CSV</button>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>E-Mail</th>
+                            <th>Inscrição</th>
+                            <!-- <th class="text-center"><i class="fa fa-cog"></i></th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr dir-paginate="item in ListaNewsletter | itemsPerPage: 50 | orderBy:'subscription_date':true"
+                            pagination-id="listaNewsletter">
+                            <td>{{item.name}}</td>
+                            <td>{{item.email}}</td>
+                            <td>{{item.subscription_date_formatted}}</td>
+                            <!-- <td>
+                                <button class="btn btn-xs btn-danger" ng-click="RemoveNewsletter(item)" ng-disabled="load"><i
+                                        class="fa fa-trash"></i></button>
+                            </td> -->
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <dir-pagination-controls pagination-id="listaNewsletter"></dir-pagination-controls>
+        </div>
+        <div class="overlay" ng-if="load">
+            <i class="fa fa-sync fa-spin"></i>
+        </div>
+    </div>
+</section>

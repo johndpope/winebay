@@ -1,0 +1,95 @@
+<section class="content-header">
+    <h1>Informações Gerais</h1>
+    <ol class="breadcrumb">
+        <li><i class="fas fa-globe"></i> Dados do Site</li>
+        <li class="active">Geral</li>
+    </ol>
+</section>
+<section class="content container-fluid">
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">Informações do Site</h3>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h4>Logo Principal</h4>
+                    <div class="form-group" flow-init="{singleFile:true, target:APIBaseUrl+'/image/upload/nocrop/1'}" flow-upload-started="ToggleUploadFlag(true)"
+                        flow-complete="ToggleUploadFlag(false)" flow-file-added="!!{png:1,jpg:1,jpeg:1}[$file.getExtension()]"
+                        flow-files-submitted="$flow.upload()" flow-file-success="DefineLogoPrincipal($message, $flow)">
+                        <label>Imagem: </label>
+                        <div>
+                            <a data-href="#" class="btn btn-xs btn-primary" ng-hide="$flow.files.length" flow-btn
+                                flow-attrs="{accept:'image/*'}" ng-disabled="logoLoad">Selecionar imagem</a>
+                            <a data-href="#" class="btn btn-xs btn-warning" ng-show="$flow.files.length" flow-btn
+                                flow-attrs="{accept:'image/*'}" ng-disabled="logoLoad">Trocar</a>
+                            <a data-href="#" class="btn btn-xs btn-danger" ng-show="$flow.files.length" ng-click="CancelaImagem($flow, DadosSite.main_logo)"
+                                ng-disabled="logoLoad">Remover</a>
+                        </div>
+                        <p><small>Envie apenas imagens JPG ou PNG.</small></p>
+                        <div class="thumbnail">
+                            <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&text=sem+imagem" ng-hide="$flow.files.length||DadosSite.main_logo" />
+                            <img src="{{APIBaseUrl+DadosSite.main_logo}}" ng-if="DadosSite.main_logo&&!$flow.files.length" />
+                            <img flow-img="$flow.files[0]" ng-show="$flow.files.length" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <h4>Logo Alternativo</h4>
+                    <div class="form-group" flow-init="{singleFile:true, target:APIBaseUrl+'/image/upload/nocrop/1'}" flow-upload-started="ToggleUploadFlag(true)"
+                        flow-complete="ToggleUploadFlag(false)" flow-file-added="!!{png:1,jpg:1,jpeg:1}[$file.getExtension()]"
+                        flow-files-submitted="$flow.upload()" flow-file-success="DefineLogoFooter($message, $flow)">
+                        <label>Imagem: </label>
+                        <div>
+                            <a data-href="#" class="btn btn-xs btn-primary" ng-hide="$flow.files.length" flow-btn
+                                flow-attrs="{accept:'image/*'}" ng-disabled="logoLoad">Selecionar imagem</a>
+                            <a data-href="#" class="btn btn-xs btn-warning" ng-show="$flow.files.length" flow-btn
+                                flow-attrs="{accept:'image/*'}" ng-disabled="logoLoad">Trocar</a>
+                            <a data-href="#" class="btn btn-xs btn-danger" ng-show="$flow.files.length" ng-click="CancelaImagem($flow, DadosSite.footer_logo)"
+                                ng-disabled="logoLoad">Remover</a>
+                        </div>
+                        <p><small>Envie apenas imagens JPG ou PNG.</small></p>
+                        <div class="thumbnail">
+                            <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&text=sem+imagem" ng-hide="$flow.files.length||DadosSite.footer_logo" />
+                            <img src="{{APIBaseUrl+DadosSite.footer_logo}}" ng-if="DadosSite.footer_logo&&!$flow.files.length" />
+                            <img flow-img="$flow.files[0]" ng-show="$flow.files.length" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-sm-12">
+                    <h4>Informações do Rodapé</h4>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>Bloco de Texto:</label>
+                        <textarea class="form-control" ng-model="DadosSite.footer_text">
+                        </textarea>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>URL do Facebook:</label>
+                        <input type="text" class="form-control" ng-model="DadosSite.facebook" />
+                    </div>
+                    <div class="form-group">
+                        <label>URL do Instagram:</label>
+                        <input type="text" class="form-control" ng-model="DadosSite.instagram" />
+                    </div>
+                    <div class="form-group">
+                        <label>URL do Twitter:</label>
+                        <input type="text" class="form-control" ng-model="DadosSite.twitter" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <button class="btn btn-primary btn-lg pull-right" ng-click="SalvarAlteracoes()">Salvar Alterações</button>
+        </div>
+        <div class="overlay" ng-if="logoLoad||load">
+            <i class="fa fa-sync fa-spin"></i>
+        </div>
+    </div>
+</section>

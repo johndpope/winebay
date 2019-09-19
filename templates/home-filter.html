@@ -1,0 +1,38 @@
+<div ng-controller="HomeSidebarController" id="homesidebar">
+    <h3 class="filter-heading" ng-click="filterIsCollapsed=!filterIsCollapsed">
+        Filtre sua Busca
+        <span class="visible-xs pull-right" ng-if="!filterIsCollapsed"><i class="fas fa-minus"></i></span>
+        <span class="visible-xs pull-right" ng-if="filterIsCollapsed"><i class="fas fa-plus"></i></span>
+    </h3>
+    <span class="rainbow-line"></span>
+    <div class="hidden-xs">
+        <div class="filter-group" ng-repeat="group in FilterGroups">
+            <h4>{{group.title}}</h4>
+            <div class="form-group has-feedback" ng-if="group.hasFilter">
+                <input type="text" class="form-control" placeholder="{{group.placeholder}}" ng-model="group.filter"/>
+                <i class="glyphicon glyphicon-search form-control-feedback search-icon"></i>
+            </div>
+            <div class="filter-items">
+                <label ng-repeat="item in group.items | filter:{text: group.filter}">
+                    <input type="checkbox" ng-model="item.checked" ng-click="ToggleFilter(item, group.attr)"/>
+                    {{item.text}}
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="visible-xs">
+        <div class="filter-group" ng-repeat="group in FilterGroups" uib-collapse="filterIsCollapsed">
+            <h4>{{group.title}}</h4>
+            <div class="form-group has-feedback" ng-if="group.hasFilter">
+                <input type="text" class="form-control" placeholder="{{group.placeholder}}" ng-model="group.filter"/>
+                <i class="glyphicon glyphicon-search form-control-feedback search-icon"></i>
+            </div>
+            <div class="filter-items">
+                <label ng-repeat="item in group.items | filter:{text: group.filter}">
+                    <input type="checkbox" ng-model="item.checked" ng-click="ToggleFilter(item, group.attr)"/>
+                    {{item.text}}
+                </label>
+            </div>
+        </div>
+    </div>
+</div>

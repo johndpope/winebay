@@ -1,0 +1,90 @@
+<div class="row banner-container">
+</div>
+<div class="container">
+    <ng-include class="col-sm-2" src="'/templates/home-filter.html'"></ng-include>
+    <div class="col-sm-10">
+        <div class="home-group">
+            <div class="input-group input-group-lg">
+                <input type="text" class="form-control" ng-model="TermoBusca" ng-disabled="load" />
+                <div class="input-group-btn">
+                    <button class="btn btn-default btn-grey" ng-click="ExecutaBusca()">
+                        <i class="glyphicon glyphicon-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="home-group home-filtered">
+            <div class="group-header">
+                <h3>
+                    <strong>{{FiltraProdutosHome().length}}</strong> produtos encontrados
+                    <div class="header-buttons">
+                        <span class="right-space">
+                            <label>Ordenar por</label>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default {{FilterOrder=='price'?'active':''}}"
+                                    ng-click="FilterOrder='price'"><i class="fas fa-dollar-sign"></i></button>
+                                <button type="button" class="btn btn-default {{FilterOrder=='name'?'active':''}}"
+                                    ng-click="FilterOrder='name'">A-Z</button>
+                            </div>
+                        </span>
+                        <label>Visualização</label>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-default {{FilterView=='grid'?'active':''}}"
+                                ng-click="FilterView='grid'"><i class="fas fa-th"></i></button>
+                            <button type="button" class="btn btn-default {{FilterView=='list'?'active':''}}"
+                                ng-click="FilterView='list'"><i class="fas fa-list"></i></button>
+                        </div>
+                    </div>
+                </h3>
+                <span class="rainbow-line"></span>
+            </div>
+            <div class="group-tags">
+                <button class="btn btn-clear-filter btn-sm" ng-click="LimpaFiltros()">Limpar todos os filtros</button>
+            </div>
+            <div class="group-products product-slider slider-filtered">
+                <div class="slide-item {{FilterView=='grid'?'col-md-3 col-sm-4 col-xs-12':'col-sm-12 is-list'}}"
+                    dir-paginate="product in FiltraProdutosHome() | itemsPerPage: 20 | orderBy:FilterOrder"
+                    pagination-id="homeFilteredProducts">
+                    <a href="#!/winehouse/{{product.winehouse_id}}/produto/{{product.id}}">
+                        <div class="slide-product">
+                            <div class="product-winehouse" ng-if="FilterView=='grid'">
+                                <img src="/assets/img/winehouse.png" class="winehouse-icon" />
+                                {{product.winehouse.name}}
+                            </div>
+                            <div class="product-image {{FilterView=='grid'?'':'text-center col-sm-3'}}">
+                                <img src="{{APIBaseUrl + product.image}}" />
+                                <span class="product-like {{product.liked?'liked':''}}"
+                                    ng-click="product.liked=!product.liked"><i class="fas fa-heart"></i></span>
+                                <span class="product-country">
+                                    <img src="{{APIBaseUrl + product.country.icon}}" class="country-icon" />
+                                    {{product.country.shortname}}
+                                </span>
+                            </div>
+                            <div class="product-info {{FilterView=='grid'?'':'col-sm-6'}}">
+                                <div class="product-winehouse" ng-if="FilterView=='grid'">
+                                    <img src="/assets/img/winehouse.png" class="winehouse-icon" />
+                                    {{product.winehouse.name}}
+                                </div>
+                                <div class="product-name">{{product.name}}</div>
+                                <div class="product-type">{{product.tipicity.name}} | {{product.size}}</div>
+                                <div class="product-type top-space-md" ng-if="FilterView=='list'">
+                                    <img src="/assets/img/winehouse.png" class="winehouse-icon" />
+                                    {{product.winehouse.name}}
+                                </div>
+                            </div>
+                            <div class="product-actions {{FilterView=='grid'?'':'col-sm-3'}}">
+                                <span
+                                    class="product-price"><small>R$</small>{{product.price.toFixed(2).replace('.', ',')}}</span>
+                                <a href="{{product.url}}"
+                                    class="product-button btn btn-success btn-bolder pull-right btn-square">Ver</a>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="group-pagination col-sm-12 top-space">
+                <dir-pagination-controls pagination-id="homeFilteredProducts"></dir-pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>

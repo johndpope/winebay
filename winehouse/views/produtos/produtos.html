@@ -1,0 +1,76 @@
+<section class="content-header">
+    <h1>Produtos</h1>
+    <ol class="breadcrumb">
+        <li class="active">
+            <i class="fa fa-cubes"></i> Produtos</li>
+    </ol>
+</section>
+<section class="content container-fluid">
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">
+                Produtos da Winehouse
+            </h3>
+            <div class="pull-right">
+                <a class="btn btn-primary" href="#!/produtos/novo">Vincular Produto</a>
+                <a class="btn btn-info" href="#!/produtos/cadastrar" ng-if="PermiteCadastro">Cadastrar Produto</a>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Valor</th>
+                            <th>Quantidade</th>
+                            <th>Safra</th>
+                            <th>Possui Oferta</th>
+                            <th>Ações</th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <input type="text" class="form-control" ng-model="ProductFilter.name" />
+                            </th>
+                            <th style="max-width:100px">
+                                <input type="text" class="form-control" ng-model="ProductFilter.price" />
+                            </th>
+                            <th style="max-width:100px">
+                                <input type="text" class="form-control" ng-model="ProductFilter.quantity" />
+                            </th>
+                            <th style="max-width:100px">
+                                <input type="text" class="form-control" ng-model="ProductFilter.crop" />
+                            </th>
+                            <th>
+                                <input type="checkbox" ng-model="ProductFilter.sale" ng-false-value="" ng-true-value="1"/>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr dir-paginate="produto in ListaProdutos | orderBy:'name' | filter:ProductFilter | itemsPerPage:15"
+                            pagination-id="pagProdutos">
+                            <td>{{produto.name}}</td>
+                            <td>{{'R$'+produto.price}}</td>
+                            <td>{{produto.quantity}}</td>
+                            <td>{{produto.crop}}</td>
+                            <td>{{produto.sale?'Sim':'Não'}}</td>
+                            <td class="text-center">
+                                <a class="btn btn-xs btn-warning" href="#!/produtos/alterar/{{produto.id}}"
+                                    title="Alterar produto no estoque"><i class="fas fa-pencil-alt"></i></a>
+                                <button class="btn btn-xs btn-danger" ng-click="ExcluiProduto(produto)">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                                <a class="btn btn-xs btn-info" href="#!/produtos/alterarcadastro/{{produto.id_product}}"
+                                    title="Alterar produto do cadastro"><i class="fas fa-eye"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <dir-pagination-controls pagination-id="pagProdutos" class="pull-right"></dir-pagination-controls>
+        </div>
+        <div class="overlay" ng-if="load">
+            <i class="fa fa-sync fa-spin"></i>
+        </div>
+    </div>
+</section>

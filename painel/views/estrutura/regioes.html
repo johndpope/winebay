@@ -1,0 +1,130 @@
+<section class="content-header">
+    <h1>Regiões</h1>
+    <ol class="breadcrumb">
+        <li><i class="fa fa-sitemap"></i> Estrutura</li>
+        <li class="active">Regiões</li>
+    </ol>
+</section>
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Lista de Regiões</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Descrição</th>
+                                <th>País</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dir-paginate="regiao in ListaRegioes | itemsPerPage:15" pagination-id="pagRegioes">
+                                <td>{{regiao.name}}</td>
+                                <td>{{regiao.description}}</td>
+                                <td>{{regiao.country_name}}</td>
+                                <td class="text-center">
+                                    <button class="btn btn-xs btn-warning" ng-click="AlteraRegiao(regiao)"><i class="fa fa-edit"></i></button>
+                                    <button class="btn btn-xs btn-danger" ng-click="ExcluiRegiao(regiao)"><i class="fa fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <dir-pagination-controls pagination-id="pagRegioes" class="pull-right"></dir-pagination-controls>
+                </div>
+                <div class="overlay" ng-if="regioesLoad">
+                    <i class="fa fa-sync fa-spin"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="box box-warning" ng-if="RegiaoAlterar">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Alterar Região</h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group">
+                        <label>Nome</label>
+                        <input class="form-control" placeholder="Digite o nome da região" type="text" ng-model="RegiaoAlterar.name" ng-disabled="uploadFlag"/>
+                    </div>
+                    <div class="form-group">
+                        <label>País</label>
+                        <select class="form-control" ng-model="RegiaoAlterar.id_country" ng-disabled="uploadFlag">
+                            <option ng-repeat="pais in ListaPaises" value="{{pais.id}}">{{pais.name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Descrição</label>
+                        <textarea class="form-control" placeholder="Digite a descrição (opcional)" ng-model="RegiaoAlterar.description" ng-disabled="uploadFlag"></textarea>
+                    </div>
+                    <div class="form-group" flow-init="{singleFile:true}" flow-upload-started="ToggleUploadFlag(true)" flow-complete="ToggleUploadFlag(false)" flow-file-added="!!{png:1,jpg:1,jpeg:1}[$file.getExtension()]" flow-files-submitted="$flow.upload()" flow-file-success="DefineImagemRegiaoAlterar($message, $flow)">
+                        <label>Imagem: <i class="fa fa-spin fa-spinner" ng-if="uploadFlag"></i></label>
+                        <div>
+                            <a data-href="#" class="btn btn-xs btn-primary" ng-hide="$flow.files.length" flow-btn flow-attrs="{accept:'image/*'}" ng-disabled="uploadFlag">Selecionar imagem</a>
+                            <a data-href="#" class="btn btn-xs btn-warning" ng-show="$flow.files.length" flow-btn flow-attrs="{accept:'image/*'}" ng-disabled="uploadFlag">Trocar</a>
+                            <a data-href="#" class="btn btn-xs btn-danger" ng-show="$flow.files.length" ng-click="CancelaImagem($flow, RegiaoAlterar.id_image)" ng-disabled="uploadFlag">Remover</a>
+                        </div>
+                        <p><small>Envie apenas imagens JPG ou PNG.</small></p>
+                        <div class="thumbnail">
+                            <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&text=sem+imagem" ng-hide="$flow.files.length||RegiaoAlterar.image"/>
+                            <img src="{{APIBaseUrl+RegiaoAlterar.image}}" ng-if="RegiaoAlterar.image&&!$flow.files.length"/>
+                            <img flow-img="$flow.files[0]" ng-show="$flow.files.length"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-default" ng-click="AlteraRegiao(false)" ng-disabled="uploadFlag">Cancelar</button>
+                    <button type="submit" class="btn btn-primary pull-right" ng-click="SalvarRegiao()" ng-disabled="uploadFlag">Alterar</button>
+                </div>
+                <div class="overlay" ng-if="alterarPaisLoad">
+                    <i class="fa fa-sync fa-spin"></i>
+                </div>
+            </div>
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Cadastrar Região</h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group">
+                        <label>Nome</label>
+                        <input class="form-control" placeholder="Digite o nome da região" type="text" ng-model="NovaRegiao.name" ng-disabled="uploadFlag"/>
+                    </div>
+                    <div class="form-group">
+                        <label>País</label>
+                        <select class="form-control" ng-model="NovaRegiao.id_country" ng-disabled="uploadFlag">
+                            <option value="">Selecione...</option>
+                            <option ng-repeat="pais in ListaPaises" value="{{pais.id}}">{{pais.name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Descrição</label>
+                        <textarea class="form-control" placeholder="Digite a descrição (opcional)" ng-model="NovaRegiao.description" ng-disabled="uploadFlag"></textarea>
+                    </div>
+                    <div class="form-group" flow-init="{singleFile:true}" flow-upload-started="ToggleUploadFlag(true)" flow-complete="ToggleUploadFlag(false)" flow-file-added="!!{png:1,jpg:1,jpeg:1}[$file.getExtension()]" flow-files-submitted="$flow.upload()" flow-file-success="DefineImagemNovaRegiao($message, $flow)">
+                        <label>Imagem: <i class="fa fa-spin fa-spinner" ng-if="uploadFlag"></i></label>
+                        <div>
+                            <a data-href="#" class="btn btn-xs btn-primary" ng-hide="$flow.files.length" flow-btn flow-attrs="{accept:'image/*'}" ng-disabled="uploadFlag">Selecionar imagem</a>
+                            <a data-href="#" class="btn btn-xs btn-warning" ng-show="$flow.files.length" flow-btn flow-attrs="{accept:'image/*'}" ng-disabled="uploadFlag">Trocar</a>
+                            <a data-href="#" class="btn btn-xs btn-danger" ng-show="$flow.files.length" ng-click="CancelaImagem($flow, NovaRegiao.id_image)" ng-disabled="uploadFlag">Remover</a>
+                        </div>
+                        <p><small>Envie apenas imagens JPG ou PNG.</small></p>
+                        <div class="thumbnail">
+                            <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&text=sem+imagem" ng-hide="$flow.files.length"/>
+                            <img flow-img="$flow.files[0]" ng-show="$flow.files.length"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-primary pull-right" ng-click="CriaNovaRegiao()" ng-disabled="uploadFlag">Cadastrar</button>
+                </div>
+                <div class="overlay" ng-if="novaRegiaoLoad">
+                    <i class="fa fa-sync fa-spin"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

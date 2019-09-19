@@ -1,0 +1,143 @@
+<section class="content-header">
+    <h1>Embalagens</h1>
+    <ol class="breadcrumb">
+        <li><i class="fa fa-sitemap"></i> Estrutura</li>
+        <li class="active">Embalagens</li>
+    </ol>
+</section>
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Lista de Embalagens</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Garrafas</th>
+                                <th>Dimensões <small>(em CM)</small></th>
+                                <th>Peso <small>(em gramas)</small></th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dir-paginate="emb in ListaEmbalagens | itemsPerPage:15" pagination-id="pagEmbalagens">
+                                <td>{{emb.name}}</td>
+                                <td>{{emb.size}}</td>
+                                <td>{{emb.width}}x{{emb.height}}x{{emb.depth}}</td>
+                                <td>{{emb.weight}}</td>
+                                <td class="text-center">
+                                    <button class="btn btn-xs btn-warning" ng-click="AlteraEmbalagem(emb)"><i
+                                            class="fa fa-edit"></i></button>
+                                    <button class="btn btn-xs btn-danger" ng-click="ExcluiEmbalagem(emb)"><i
+                                            class="fa fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <dir-pagination-controls pagination-id="pagEmbalagens" class="pull-right"></dir-pagination-controls>
+                </div>
+                <div class="overlay" ng-if="embLoad">
+                    <i class="fa fa-sync fa-spin"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="box box-warning" ng-if="EmbAlterar">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Alterar Embalagem</h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group">
+                        <label>Nome</label>
+                        <input class="form-control" placeholder="Digite o nome da embalagem" type="text"
+                            ng-model="EmbAlterar.name" ng-disabled="alterarEmbLoad" />
+                    </div>
+                    <div class="form-group">
+                        <label>Garrafas</label>
+                        <input class="form-control" placeholder="Digite o tamanho" type="number" min="0" step="1"
+                            ng-model="EmbAlterar.size" ng-disabled="alterarEmbLoad" />
+                    </div>
+                    <div class="form-group">
+                        <label>Altura <small>(em CM)</small></label>
+                        <input class="form-control" placeholder="Digite a altura" type="number" min="0" step="1"
+                            ng-model="EmbAlterar.height" ng-disabled="alterarEmbLoad" />
+                    </div>
+                    <div class="form-group">
+                        <label>Largura <small>(em CM)</small></label>
+                        <input class="form-control" placeholder="Digite a largura" type="number" min="0" step="1"
+                            ng-model="EmbAlterar.width" ng-disabled="alterarEmbLoad" />
+                    </div>
+                    <div class="form-group">
+                        <label>Profundidade <small>(em CM)</small></label>
+                        <input class="form-control" placeholder="Digite a profundidade" type="number" min="0" step="1"
+                            ng-model="EmbAlterar.depth" ng-disabled="alterarEmbLoad" />
+                    </div>
+                    <div class="form-group">
+                        <label>Peso <small>(em gramas)</small></label>
+                        <input class="form-control" placeholder="Digite o peso" type="number" min="0" step="1"
+                            ng-model="EmbAlterar.weight" ng-disabled="alterarEmbLoad" />
+                        <small>Considerar o peso da embalagem cheia.</small>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-default" ng-click="AlteraEmbalagem(false)"
+                        ng-disabled="alterarEmbLoad">Cancelar</button>
+                    <button type="submit" class="btn btn-primary pull-right" ng-click="SalvarEmbalagem()"
+                        ng-disabled="alterarEmbLoad">Alterar</button>
+                </div>
+                <div class="overlay" ng-if="alterarEmbLoad">
+                    <i class="fa fa-sync fa-spin"></i>
+                </div>
+            </div>
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Cadastrar Embalagem</h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group">
+                        <label>Nome</label>
+                        <input class="form-control" placeholder="Digite o nome da embalagem" type="text"
+                            ng-model="NomeNovaEmbalagem" ng-disabled="embLoad" />
+                    </div>
+                    <div class="form-group">
+                        <label>Tamanho</label>
+                        <input class="form-control" placeholder="Digite o tamanho" type="number"
+                            ng-model="TamanhoNovaEmbalagem" ng-disabled="embLoad" />
+                    </div>
+                    <div class="form-group">
+                        <label>Altura <small>(em CM)</small></label>
+                        <input class="form-control" placeholder="Digite a altura" type="number" min="0" step="1"
+                            ng-model="AlturaNovaEmbalagem" ng-disabled="alterarEmbLoad" />
+                    </div>
+                    <div class="form-group">
+                        <label>Largura <small>(em CM)</small></label>
+                        <input class="form-control" placeholder="Digite a largura" type="number" min="0" step="1"
+                            ng-model="LarguraNovaEmbalagem" ng-disabled="alterarEmbLoad" />
+                    </div>
+                    <div class="form-group">
+                        <label>Profundidade <small>(em CM)</small></label>
+                        <input class="form-control" placeholder="Digite a profundidade" type="number" min="0" step="1"
+                            ng-model="ProfundidadeNovaEmbalagem" ng-disabled="alterarEmbLoad" />
+                    </div>
+                    <div class="form-group">
+                        <label>Peso <small>(em gramas)</small></label>
+                        <input class="form-control" placeholder="Digite o peso" type="number" min="0" step="1"
+                            ng-model="PesoNovaEmbalagem" ng-disabled="alterarEmbLoad" />
+                        <small>Considerar o peso da embalagem cheia.</small>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-primary pull-right" ng-click="NovaEmbalagem()"
+                        ng-disabled="embLoad">Cadastrar</button>
+                </div>
+                <div class="overlay" ng-if="embLoad">
+                    <i class="fa fa-sync fa-spin"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

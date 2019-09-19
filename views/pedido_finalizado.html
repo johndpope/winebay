@@ -1,0 +1,87 @@
+<div class="page-banner row" style="background-image: url('/assets/img/pedido_finalizado.jpg')">
+    <h2>Pedido concluído com sucesso</h2>
+    <h4>Acompanhe seu pedido na área de clientes</h4>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="home-group home-filtered">
+                <div class="group-header">
+                    <h3>
+                        <span class="bolder">Detalhes do Pedido</span>
+                    </h3>
+                    <span class="rainbow-line"></span>
+                </div>
+                <div class="form-info">
+                    Esperamos que você goste do que escolheu.
+                </div>
+            </div>
+            <div class="order-info">
+                <div class="row top-space" ng-repeat="DadosCompra in ListaCompras">
+                    <div class="col-sm-5">
+                        <div class="order-block-default">
+                            <div class="row">
+                                <div class="col-sm-7">
+                                    <div class="order-block">
+                                        <label>Número do Pedido</label>
+                                        <span class="order-info">{{DadosCompra.order.number}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-5">
+                                    <div class="order-block">
+                                        <label>Data do Pedido</label>
+                                        <span class="order-info">{{DadosCompra.formatted_date}}</span>
+                                        <!-- <small>Entrega em até 15 dias úteis</small> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-7">
+                        <div class="order-block-green">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="order-block">
+                                        <label>Forma de Pagamento</label>
+                                        <span
+                                            class="order-info">{{DadosCompra.order.payment_mode=='credit_card'?'Cartão':'Boleto'}}</span>
+                                        <small
+                                            ng-if="DadosCompra.payment_mode=='credit_card'">{{DadosCompra.card_payment.installments}}x
+                                            sem juros</small>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="order-block">
+                                        <label>Endereço de Entrega</label>
+                                        <span class="order-info">{{DadosCompra.order.address.name}}</span>
+                                        <small>
+                                            {{DadosCompra.order.address.address}}
+                                            <br />{{DadosCompra.order.address.region}}, {{DadosCompra.order.address.cep}}
+                                            <br />{{DadosCompra.order.address.city}} - {{DadosCompra.order.address.state}}
+                                            <br />{{DadosCompra.order.address.information}}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="order-block">
+                                        <label class="text-left">Total</label>
+                                        <span class="order-price">
+                                            <small>R$</small> {{DadosCompra.order.total_amount.toBRCurrency()}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row top-space-lg" ng-if="MetodoPagamento=='boleto'">
+                    <div class="col-sm-12 text-center top-space-lg">
+                        <h4>Por favor, clique no botão abaixo para gerar o boleto e efetue o pagamento para a conclusão
+                            do pedido.</h4>
+                        <button class="btn btn-xlg btn-success top-space-lg" disabled>Gerar Boleto</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

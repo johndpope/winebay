@@ -1,0 +1,86 @@
+<section class="content-header">
+    <h1>Cupons</h1>
+    <ol class="breadcrumb">
+        <li><i class="fas fa-ticket-alt"></i> Cupons</li>
+    </ol>
+</section>
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Lista de Cupons</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Valor</th>
+                                <th>Status</th>
+                                <th>Criado em</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dir-paginate="coup in ListaCupons | itemsPerPage:15" pagination-id="pagCupons">
+                                <td>{{coup.code}}</td>
+                                <td>{{'R$' + coup.value.toBRCurrency()}}</td>
+                                <td>
+                                    {{coup.active?'Ativo':'Inativo'}}
+                                    <button class="btn btn-xs btn-default" ng-disabled="cuponsLoad" ng-click="ToggleStatusCupom(coup)">
+                                        <i class="fa fa-sync"></i>
+                                    </button>
+                                </td>
+                                <td>{{coup.date_creation_formatted}}</td>
+                                <td class="text-center">
+                                    <button class="btn btn-xs btn-danger" ng-click="ExcluiCupom(coup)"><i
+                                            class="fa fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <dir-pagination-controls pagination-id="pagCupons" class="pull-right"></dir-pagination-controls>
+                </div>
+                <div class="overlay" ng-if="cuponsLoad">
+                    <i class="fa fa-sync fa-spin"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Cadastrar Cupom</h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group">
+                        <label>Código</label>
+                        <input class="form-control" placeholder="Digite o código do cupom" type="text"
+                            ng-model="NovoCupom.code" ng-disabled="cuponsLoad" />
+                    </div>
+                    <div class="form-group">
+                        <label>Valor</label>
+                        <input class="form-control" placeholder="Digite o valor" type="text"
+                            ng-model="NovoCupom.value" ng-disabled="cuponsLoad" />
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <div>
+                            <label>
+                                <input type="checkbox" ng-model="NovoCupom.active" />
+                                este cupom está ativo
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-primary pull-right" ng-click="CriarNovoCupom()"
+                        ng-disabled="cuponsLoad">Cadastrar</button>
+                </div>
+                <div class="overlay" ng-if="cuponsLoad">
+                    <i class="fa fa-sync fa-spin"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
